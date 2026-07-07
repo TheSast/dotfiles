@@ -18,6 +18,7 @@
     "os/kafka/sshd/ssh_host_ed25519_key.pub.age"
     "os/kafka/sshd/ssh_host_rsa_key.age"
     "os/kafka/sshd/ssh_host_rsa_key.pub.age"
+    "os/kafka/luks-password.age"
     "home/git/identities/gh-joker.age"
     "home/git/identities/gh-ren.age"
     "home/git/identities/gl-ren.age"

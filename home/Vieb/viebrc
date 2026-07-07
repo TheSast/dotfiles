@@ -11,6 +11,7 @@ set mapsuggestposition=bottomright
 set notificationposition=topright
 set permissionnotifications=ask
 set permissionpersistentstorage=ask
+set permissionsallowed+=keyboard.frame.work~hid
 set permissionscreenwakelock=ask
 set permissionsensors=ask
 set permissionunknown=ask

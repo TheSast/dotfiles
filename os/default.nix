@@ -100,9 +100,29 @@
   ];
 
   security = {
-    polkit.enable = true;
+    polkit = {
+      enable = true;
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (action.id.indexOf("org.nixos") == 0) {
+            polkit.log("Caching admin authentication for single NixOS operation");
+            return polkit.Result.AUTH_ADMIN_KEEP;
+          }
+        });
+      '';
+    };
     pam.services.hyprlock = {};
-    # sudo.enable = false;
+    sudo.enable = false;
+    wrappers = {
+      su.enable = false;
+      sudoedit.enable = false;
+      sg.enable = false;
+      # fusermount.enable = false; # may break appimages?
+      # fusermount3.enable = false; # may break appimages?
+      pkexec3.enable = false;
+      newgpr.enable = false;
+      chsh.enable = config.users.mutableUsers;
+    };
   };
   users = {
     mutableUsers = false;
@@ -121,12 +141,29 @@
       };
     };
   };
+  services.ntp.enable = !config.services.chrony.enable;
+  services.chrony = {
+    enable = true;
+    enableNTS = true;
+  };
 
   services.openssh = {
     enable = true;
+    startWhenNeeded = lib.mkDefault true;
     settings = {
       PasswordAuthentication = false;
       PermitRootLogin = "no";
+    };
+  };
+  services.fail2ban = {
+    enable = true;
+    maxretry = 5;
+    bantime = "1h";
+    bantime-increment = {
+      enable = true;
+      multipliers = "1 2 4 8 16 32 64 28 256";
+      maxtime = "168h";
+      overalljails = true;
     };
   };
   services.avahi = {
@@ -158,7 +195,7 @@
         fishNoDesktop = pkgs.symlinkJoin {
           name = "fish-no-desktop";
           paths = [pkgs.fish];
-
+          meta = pkgs.fish;
           postBuild = ''
             rm -f $out/share/applications/fish.desktop
           '';
