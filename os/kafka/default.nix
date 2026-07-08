@@ -1,4 +1,17 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
+  services.openssh = {
+    generateHostKeys = false;
+    hostKeys = [
+      {path = config.age.secrets."kafka/sshd/ssh_host_ed25519_key".path;}
+      {path = config.age.secrets."kafka/sshd/ssh_host_ed25519_key.pub".path;}
+      {path = config.age.secrets."kafka/sshd/ssh_host_rsa_key".path;}
+      {path = config.age.secrets."kafka/sshd/ssh_host_rsa_key.pub".path;}
+    ];
+  };
   networking.hostName = "kafka";
   system.stateVersion = "23.05"; # WARNING: do not touchy
   boot.loader = {

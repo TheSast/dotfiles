@@ -10,6 +10,7 @@
   gsettings-schemas = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.pname}-${pkgs.gsettings-desktop-schemas.version}";
 in {
   imports = [
+    ./secrets.nix
     ./niri.nix
     ./hyprland.nix
   ];
@@ -376,9 +377,10 @@ in {
     ".vieb" = {
       source = ./Vieb;
     };
-    ".ssh" = {
-      source = symlinkDirectly "ssh";
+    ".ssh/config" = {
+      source = ./ssh/config;
     };
+    # ssh keys handled via ./secrets.nix
   };
 
   gtk = {
