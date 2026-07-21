@@ -124,7 +124,6 @@ binds {
     Mod+V { spawn-sh "noctalia msg panel-toggle clipboard"; }
     Mod+Shift+V { spawn-sh "$XDG_CONFIG_HOME/scripts/editclip.sh"; }
     Mod+Shift+Z { maximize-column; }
-    // Mod+Z { spawn "nfsm-cli"; }
     Mod+Z { fullscreen-window; }
     Mod+B { toggle-window-floating; }
     Mod+Tab { toggle-overview; }
