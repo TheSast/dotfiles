@@ -170,7 +170,7 @@ in {
       Discord = {
         name = "Discord";
         genericName = "Messaging Platform";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Discord/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Discord https://discord.com/app";
+        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Discord/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Discord --disable-features=WebRtcAllowInputVolumeAdjustment https://discord.com/app";
         icon = "${config.xdg.configHome}/Vieb/Erwic/Discord/icon.png";
         terminal = false;
         type = "Application";
