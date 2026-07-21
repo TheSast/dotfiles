@@ -351,6 +351,9 @@ in {
       waybar = {
         source = ./waybar;
       };
+      wob = {
+        source = ./wob;
+      };
     };
     # list executables via `ls -1  $XDG_STATE_DIR/nix/profile/bin/ | sed -E 's%.*-> .{43}-%%g' | sort`
     dataFile = {
