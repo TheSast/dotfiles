@@ -45,6 +45,8 @@
     useConfigOnly = true
 [includeIf "hasconfig:remote.*.url:gh-joker:*/*"]
     path = "identities/gh-joker"
+[includeIf "hasconfig:remote.*.url:dawn-wine-joker:*/*"]
+    path = "identities/dawn-wine-joker"
 [includeIf "hasconfig:remote.*.url:gh-ren:*/*"]
     path = "identities/gh-ren"
 [includeIf "hasconfig:remote.*.url:gl-ren:*/*"]

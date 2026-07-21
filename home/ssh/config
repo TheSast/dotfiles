@@ -13,6 +13,12 @@ Host gl-ren
     HostName gitlab.com
     IdentityFile ~/.ssh/ren/id_ed25519
     IdentitiesOnly yes
+Host dawn-wine-joker
+    User git
+    HostName ssh.dawn.wine
+    Port 69
+    IdentityFile ~/.ssh/joker/id_ed25519
+    IdentitiesOnly yes
 Host vjcommunity
     User nixos
     HostName mc.vimjoyer.com
