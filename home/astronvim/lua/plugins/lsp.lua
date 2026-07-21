@@ -102,6 +102,13 @@ return {
             offsetEncoding = "utf-8",
           },
         },
+        lua_ls = {
+          settings = {
+            Lua = {
+              ["hint.arrayIndex"] = false,
+            },
+          },
+        },
         bashls = {
           settings = {
             bashIde = {

@@ -2,13 +2,13 @@ require("lazy").setup {
   spec = {
     {
       "AstroNvim/AstroNvim",
-      version = "*",
+      version = "6.0.5",
       import = "astronvim.plugins",
       opts = {
         maplocalleader = vim.utils.termcodes "<C-Space>",
       },
     },
-    { "AstroNvim/astrocommunity", version = "*" },
+    { "AstroNvim/astrocommunity", version = "20.0.0" },
     { import = "plugins" },
   },
   change_detection = { notify = false },

@@ -104,16 +104,10 @@ return {
     "nvim-treesitter-textobjects",
     enabled = false,
   },
-  {
-    "vim-illuminate",
-    opts = { delay = 100, disable_keymaps = true },
-  },
-  {
-    "Comment.nvim",
-    opts = {
-      toggler = { line = "", block = "" }, -- ISSUE: not unmappable
-    },
-  },
+  -- {
+  --   "vim-illuminate", -- move to snaks.works?
+  --   opts = { delay = 100, disable_keymaps = true },
+  -- },
   {
     "aerial.nvim",
     opts = {

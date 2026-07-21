@@ -90,20 +90,21 @@ in {
           selene
           tinymist
           nil
-          vscode-json-languageserver # neoconf
           statix
           stylua
         ]
         ++ [
           # build
           gcc # nvim-treesitter
-          git # lazy.nvim # luarocks.nvim # blink.cmp # snacks.nvim
+          git # lazy.nvim
+          luarocks # luarocks.nvim # blink.cmp # snacks.nvim
           luajit # luarocks.nvim
           unzip # luarocks.nvim
           gnumake # jsregexp for LuaSnip
           ripgrep # telescope-fzf-native.nvim # snacks.nvim
           curl # blink.cmp
           fd # snacks.nvim
+          tree-sitter # nvim-treeesitter
           # xdg-utils?
           # wl-clipboard?
         ];
