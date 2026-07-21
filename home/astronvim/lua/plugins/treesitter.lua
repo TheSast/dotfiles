@@ -22,12 +22,4 @@ return {
       },
     },
   },
-  {
-    "luckasRanarison/tree-sitter-hyprlang",
-    event = "User AstroFile",
-    dependencies = {
-      "nvim-treesitter",
-      opts = { ensure_installed = { "hyprlang" } },
-    },
-  },
 }

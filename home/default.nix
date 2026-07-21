@@ -11,7 +11,6 @@ in {
   imports = [
     ./secrets.nix
     ./niri.nix
-    ./hyprland.nix
   ];
   home = {
     username = "u";
@@ -298,9 +297,6 @@ in {
       hyfetch = {
         target = "hyfetch.json";
         source = ./hyfetch.json;
-      };
-      hypr = {
-        source = symlinkDirectly "hypr";
       };
       lazygit = {
         source = ./lazygit;
