@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
-# runtimeInputs = [findutils coreutils awww wallust waybar procps imagemagick glib gsettings-desktop-schemas]
+# runtimeInputs = [findutils coreutils noctalia glib gsettings-desktop-schemas]
 # ++ ./log.sh.runtimeInputs
 # ++ ./theme.sh.runtimeInputs;
 
@@ -21,41 +21,15 @@ export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
 	WALLPAPER="$(find_wallpaper)"
 	echo "$WALLPAPER"
 	ln -sf "$WALLPAPER" "$XDG_CACHE_HOME/wallpaper"
-	timeout 10s magick "$(realpath "$XDG_CACHE_HOME/wallpaper")" -resize 50% -blur 0x3 -resize 200% "$XDG_CACHE_HOME/wallpaper-blurred" || ln -sf "$WALLPAPER" "$XDG_CACHE_HOME/wallpaper-blurred"
 	echo "END"
 } 2>&1 | log wallpaper
 
 {
 	echo "START"
-	if command -v awww >/dev/null 2>&1; then
-		if ! awww query >/dev/null 2>&1 || [ "$XDG_CURRENT_DESKTOP" = "niri" ] && ! awww query -n overview-bg >/dev/null 2>&1; then
-			if ! awww query >/dev/null 2>&1; then
-				awww-daemon -l bottom --no-cache & # INFO: daemon
-			fi
-			if [ "$XDG_CURRENT_DESKTOP" = "niri" ] && ! awww query -n overview-bg >/dev/null 2>&1; then
-				awww-daemon -n overview-bg --no-cache & # INFO: daemon
-			fi
-			awww img -t none -- "$XDG_CACHE_HOME/wallpaper"
-			if [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
-				awww img -n overview-bg -t none -- "$XDG_CACHE_HOME/wallpaper-blurred"
-			fi
-		else
-			export SWWW_TRANSITION=$(shuf -e -n 1 "wave" "grow" "outer")
-			export SWWW_TRANSITION_ANGLE=$(shuf -e -n 1 "45" "90" "135" "180" "225" "270" "315" "360")
-			export SWWW_TRANSITION_POS=$(shuf -e -n 1 "center" "top" "left" "right" "bottom" "top-left" "top-right" "bottom-left" "bottom-right")
-			export SWWW_TRANSITION_WAVE=$(shuf -e -n 1 "100,1" "10,10" "20,20" "30,30" "40,40" "40,10" "30,20")
-			export SWWW_TRANSITION_FPS=255
-			export SWWW_TRANSITION_STEP=255
-			awww img -- "$XDG_CACHE_HOME/wallpaper"
-			if [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
-				awww img -n overview-bg -- "$XDG_CACHE_HOME/wallpaper-blurred"
-				sleep 3
-				niri msg action load-config-file
-			fi
-		fi
-	fi
+	noctalia msg wallpaper-set $(realpath "$XDG_CACHE_HOME/wallpaper") || true
+  noctalia msg theme-mode-set $THEME || true
 	echo "END"
-} 2>&1 | log awww &
+} 2>&1 | log noctalia &
 
 {
 	echo "START"
@@ -69,31 +43,3 @@ export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
 	gsettings set org.gnome.desktop.interface color-scheme $COLORSCHEME
 	echo "END"
 } 2>&1 | log gsettings &
-
-{
-	echo "START"
-	if command -v wallust >/dev/null 2>&1; then
-		REAL_WALLPAPER_LOCATION="$(realpath "$XDG_CACHE_HOME/wallpaper")"
-		{
-			wallust run -p "$THEME"16 --dynamic-threshold -- "$REAL_WALLPAPER_LOCATION"
-			echo "END"
-		} &
-	fi
-} 2>&1 | log wallust &
-
-{
-	echo "START"
-	if command -v waybar >/dev/null 2>&1; then
-		STYLE="style.css"
-		if [ "$THEME" = "dark" ]; then
-			STYLE="style-dark.css"
-		fi
-		ln -sf $XDG_CONFIG_HOME/waybar/$STYLE $XDG_CACHE_HOME/waybar.css
-		if pgrep waybar >/dev/null 2>&1; then
-			pkill -SIGUSR2 waybar
-		else
-			nohup waybar "--style $XDG_CACHE_HOME/waybar.css" >/dev/null 2>&1 & # INFO: daemon
-		fi
-	fi
-	echo "END"
-} 2>&1 | log waybar &

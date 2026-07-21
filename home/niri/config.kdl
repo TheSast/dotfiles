@@ -50,10 +50,8 @@ gestures {
 
 output "eDP-1" {
     scale 1.6
-}
-
-output "ASUSTek COMPUTER INC VG279 L6LMQS002042" {
-    mode "1920x1080@143.999"
+    position x=0 y=0
+    focus-at-startup
     variable-refresh-rate
 }
 
@@ -74,17 +72,17 @@ overview {
 }
 
 window-rule {
-    geometry-corner-radius 8
+    geometry-corner-radius 10
     clip-to-geometry true
     background-effect {
-        xray true
+        xray false
         blur true
     }
 
     popups {
         opacity 0.9
         background-effect {
-            xray true
+            xray false
             blur true
         }
     }
@@ -101,8 +99,15 @@ window-rule {
 }
 
 layer-rule {
-    match namespace="^awww-daemonoverview-bg$"
+    match namespace="^noctalia-(backdrop|overview.*)$"
     place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+    background-effect {
+        xray false
+    }
 }
 
 animations {
@@ -114,53 +119,48 @@ binds {
     Mod+Escape { toggle-keyboard-shortcuts-inhibit; }
     Mod+N { spawn "alacritty"; }
     Mod+F { spawn-sh "tofi-drun | /bin/sh"; }
+    Mod+Alt+F { spawn-sh "noctalia msg panel-toggle launcher"; }
     Mod+Q { close-window; }
-    Mod+V { spawn-sh "cliphist list | tofi | cliphist decode | wl-copy"; }
+    Mod+V { spawn-sh "noctalia msg panel-toggle clipboard"; }
     Mod+Shift+V { spawn-sh "$XDG_CONFIG_HOME/scripts/editclip.sh"; }
     Mod+Shift+Z { maximize-column; }
     // Mod+Z { spawn "nfsm-cli"; }
     Mod+Z { fullscreen-window; }
     Mod+B { toggle-window-floating; }
     Mod+Tab { toggle-overview; }
+    Mod+Space { spawn-sh "noctalia msg bar-toggle"; }
 
-    XF86AudioRaiseVolume {
-        spawn-sh r#"wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%+;
-        wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+    XF86AudioRaiseVolume allow-when-locked=true {
+        spawn-sh "noctalia msg volume-up";
     }
-    XF86AudioLowerVolume {
-        spawn-sh r#"wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%-;
-        wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+    XF86AudioLowerVolume allow-when-locked=true {
+        spawn-sh "noctalia msg volume-down";
     }
-    XF86AudioMute {
-        spawn-sh r#"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle;
-        wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+    XF86AudioMute allow-when-locked=true {
+        spawn-sh "noctalia msg volume-mute";
     }
     Shift+XF86AudioRaiseVolume {
-        spawn-sh r#"wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 2%+;
-        wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+        spawn-sh "noctalia msg mic-volume-up";
     }
     Shift+XF86AudioLowerVolume {
-        spawn-sh r#"wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 2%-;
-        wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+        spawn-sh "noctalia msg mic-volume-down";
     }
     Shift+XF86AudioMute {
-        spawn-sh r#"wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle;
-        wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print int($2 * 100) ($3 == "[MUTED]" ? " muted" : "")}' >> /tmp/wobpipe"#;
+        spawn-sh "noctalia msg mic-mute";
     }
-    XF86MonBrightnessUp {
-        spawn-sh r#"brightnessctl set 2%+;
-        brightnessctl get | awk -v max=$(brightnessctl max) '{print int(($1 / max) * 100)}' >> /tmp/wobpipe"#;
+    XF86MonBrightnessUp allow-when-locked=true {
+        spawn-sh "noctalia msg brightness-up";
     }
-    XF86MonBrightnessDown {
-        spawn-sh r#"brightnessctl set 2%-;
-        brightnessctl get | awk -v max=$(brightnessctl max) '{print int(($1 / max) * 100)}' >> /tmp/wobpipe"#;
+    XF86MonBrightnessDown allow-when-locked=true {
+        spawn-sh "noctalia msg brightness-down";
     }
-    XF86AudioPlay { spawn "playerctl" "play-pause"; }
-    XF86AudioPrev { spawn "playerctl" "previous"; }
-    XF86AudioNext { spawn "playerctl" "next"; }
-    XF86AudioStop { spawn "playerctl" "stop"; }
+    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
+    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
+    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; }
+    XF86AudioStop allow-when-locked=true { spawn-sh "noctalia msg media stop"; }
+    Mod+P { spawn-sh "noctalia msg panel-toggle elijaharch/wl-screen-mirror:controls"; }
     Print { screenshot; }
-    XF86PowerOff { spawn-sh "$XDG_CONFIG_HOME/scripts/power_off.sh"; }
+    XF86PowerOff { spawn-sh "noctalia msg panel-toggle session"; }
 
     Mod+H { focus-column-or-monitor-left; }
     Mod+J { focus-window-or-workspace-down; }
@@ -184,6 +184,10 @@ binds {
     Mod+7 { focus-workspace 7; }
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
+}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
 }
 
 switch-events {

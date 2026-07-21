@@ -1,5 +1,6 @@
 {
   inputs = {
+    # nix
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -7,8 +8,11 @@
     };
     call-flake.url = "github:divnix/call-flake";
 
+    # shared
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # system
     preservation.url = "github:nix-community/preservation";
     disko = {
       url = "github:nix-community/disko";
@@ -19,6 +23,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # user
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +34,10 @@
     };
     nfsm = {
       url = "github:gvolpe/nfsm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vieb = {
@@ -117,16 +126,6 @@
             bash-language-server
             shellharden
             shfmt
-          ];
-        };
-      hypr =
-        pkgs.mkShell.override
-        {
-          stdenv = pkgs.stdenvNoCC;
-        }
-        {
-          packages = with pkgs; [
-            hyprls
           ];
         };
     });

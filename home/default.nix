@@ -7,7 +7,6 @@
 }: let
   flakeLoc = "${config.xdg.configHome}/etc";
   symlinkDirectly = p: config.lib.file.mkOutOfStoreSymlink ("${flakeLoc}/home/" + p);
-  gsettings-schemas = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.pname}-${pkgs.gsettings-desktop-schemas.version}";
 in {
   imports = [
     ./secrets.nix
@@ -57,7 +56,6 @@ in {
     bat
     broot
     btop
-    cliphist
     difftastic
     dust
     erdtree
@@ -74,11 +72,9 @@ in {
     fzf
     gh
     git
-    glib
     glow
     inlyne
     lazygit
-    libnotify
     losslesscut-bin
     mpv
     neovide
@@ -126,18 +122,32 @@ in {
     obsidian
     onefetch
     ouch
-    playerctl
-    polkit_gnome
     ripgrep
     swayimg
-    awww
     tabiew
     tmux
-    tofi
     trash-cli
-    udiskie
-    (inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
-      electron = pkgs.electron_42;
+    (pkgs.symlinkJoin {
+      # This wrapper prevents chromium from reading custom gtk css
+      # If chromium reads custom gtk css, it stops listening for
+      # dconf/gsettings colorscheme changes
+      name = "vieb-wrapped";
+      paths = [
+        (inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
+          electron = pkgs.electron_42;
+        })
+      ];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        mkdir -p $out/hacks/empty
+        mkdir -p $out/hacks/bin
+        mv $out/bin/vieb $out/hacks/bin/vieb.real
+        makeWrapper ${pkgs.bubblewrap}/bin/bwrap $out/bin/vieb \
+          --add-flags "--dev-bind / /" \
+          --add-flags "--bind $out/hacks/empty \"\''${XDG_CONFIG_HOME:-\$HOME/.config}/gtk-3.0"\" \
+          --add-flags "--bind $out/hacks/empty \"\''${XDG_CONFIG_HOME:-\$HOME/.config}/gtk-4.0"\" \
+          --add-flags "$out/hacks/bin/vieb.real"
+      '';
     })
     # luakit
     # qutebrowser
@@ -145,11 +155,8 @@ in {
     # nyxt
     # floorp
     # helium
-    wallust
-    waybar
     wf-recorder
     wl-clipboard
-    wob
     xdg-utils
     zathura
     zellij
@@ -230,9 +237,6 @@ in {
       templates = null;
       publicShare = null;
     };
-    systemDirs = {
-      data = [gsettings-schemas];
-    };
     configFile = {
       alacritty-toml = {
         text =
@@ -260,7 +264,7 @@ in {
             style = "Medium"
 
             [general]
-            import = ["${config.xdg.cacheHome}/wallust/alacritty.toml"]
+            import = ["${config.xdg.configHome}/alacritty/themes/noctalia.toml"]
           '';
         target = "alacritty/alacritty.toml";
       };
@@ -325,34 +329,9 @@ in {
       tmux-powerline = {
         source = ./tmux-powerline;
       };
-      tofi = {
-        source = ./tofi;
-      };
       Vieb = {
         source = ./Vieb;
         recursive = true;
-      };
-      wallust = {
-        source = ./wallust;
-        recursive = true;
-      };
-      wallust-toml = {
-        text =
-          /*
-          toml
-          */
-          ''
-            [templates]
-            alacritty = { template = "alacritty.toml", target = "${config.xdg.cacheHome}/wallust/alacritty.toml" }
-            tty = { template = "tty.sh", target = "${config.xdg.cacheHome}/wallust/tty.sh" }
-          '';
-        target = "wallust/wallust.toml";
-      };
-      waybar = {
-        source = ./waybar;
-      };
-      wob = {
-        source = ./wob;
       };
     };
     # list executables via `ls -1  $XDG_STATE_DIR/nix/profile/bin/ | sed -E 's%.*-> .{43}-%%g' | sort`
@@ -386,30 +365,6 @@ in {
     # ssh keys handled via ./secrets.nix
   };
 
-  gtk = {
-    enable = true;
-    gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-    gtk4.theme = config.gtk.theme;
-    cursorTheme = {
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Ice";
-    };
-    theme = {
-      package = pkgs.adw-gtk3;
-      name = "adw-gtk3";
-    };
-    iconTheme = {
-      package = pkgs.adwaita-icon-theme;
-      name = "Adwaita";
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk3";
-    style.name = "gtk2";
-  };
-
   # Shell variables
   home.sessionVariables =
     config.systemd.user.sessionVariables
@@ -431,7 +386,6 @@ in {
   # Session variables
   # These are picked up by GDM and KDE Plasma (apparently) but not by SDDM (which loads your shell config) or other DMs
   systemd.user.sessionVariables = {
-    GSETTINGS_SCHEMAS = gsettings-schemas;
     XDG_DOCUMENTS_DIR = config.xdg.userDirs.documents;
     XDG_PICTURES_DIR = config.xdg.userDirs.pictures;
     XDG_DOWNLOAD_DIR = config.xdg.userDirs.download;
@@ -682,7 +636,11 @@ in {
         functions -e la
         functions -e ll
         functions -e ls
-        sh ${config.xdg.cacheHome}/wallust/tty.sh
+        set tty_colors ${config.xdg.cacheHome}/noctalia-templates/tty
+        if test -f $tty_colors
+          sh $tty_colors
+        end
+        set -e tty_colors
         eval (${lib.getExe pkgs.starship} init fish) && enable_transience
         ${lib.getExe pkgs.zoxide} init fish | source
         source ${config.xdg.configHome}/fish/functions/z.fish

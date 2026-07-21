@@ -1,0 +1,3 @@
+background-color = {{colors.terminal_background.default.hex}}AA
+text-color = {{colors.terminal_foreground.default.hex}}
+selection-color = {{colors.primary.default.hex}}

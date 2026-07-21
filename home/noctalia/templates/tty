@@ -1,0 +1,19 @@
+#!/bin/sh
+[ "${TERM:-none}" = "linux" ] && \
+    printf '%b' '\e]P0{{colors.terminal_normal_black.default.hex_stripped}}
+                 \e]P1{{colors.terminal_normal_red.default.hex_stripped}}
+                 \e]P2{{colors.terminal_normal_green.default.hex_stripped}}
+                 \e]P3{{colors.terminal_normal_yellow.default.hex_stripped}}
+                 \e]P4{{colors.terminal_normal_blue.default.hex_stripped}}
+                 \e]P5{{colors.terminal_normal_magenta.default.hex_stripped}}
+                 \e]P6{{colors.terminal_normal_cyan.default.hex_stripped}}
+                 \e]P7{{colors.terminal_normal_white.default.hex_stripped}}
+                 \e]P8{{colors.terminal_bright_black.default.hex_stripped}}
+                 \e]P9{{colors.terminal_bright_red.default.hex_stripped}}
+                 \e]PA{{colors.terminal_bright_green.default.hex_stripped}}
+                 \e]PB{{colors.terminal_bright_yellow.default.hex_stripped}}
+                 \e]PC{{colors.terminal_bright_blue.default.hex_stripped}}
+                 \e]PD{{colors.terminal_bright_magenta.default.hex_stripped}}
+                 \e]PE{{colors.terminal_bright_cyan.default.hex_stripped}}
+                 \e]PF{{colors.terminal_bright_white.default.hex_stripped}}
+                 \ec'

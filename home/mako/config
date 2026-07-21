@@ -1,7 +1,0 @@
-layer=overlay
-background-color=#000000
-default-timeout=5000
-width=500
-padding=7
-margin=5,-3,0,0
-font=monospace 12

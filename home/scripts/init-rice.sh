@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
-# runtimeInputs = [coreutils awww wallust waybar]
+# runtimeInputs = [coreutils noctalia]
 # ++ ./log.sh.runtimeInputs
 # ++ ./theme.sh.runtimeInputs;
 
@@ -12,52 +12,10 @@ set -o nounset
 THEME=$("$XDG_CONFIG_HOME/scripts/theme.sh")
 export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
 
+# NOTE: this is only necessary because only one of the noctalia implementations is active at one time
 {
 	echo "START"
-	if command -v awww >/dev/null 2>&1; then
-		if ! awww query >/dev/null 2>&1; then
-			awww-daemon -l bottom --no-cache & # INFO: daemon
-		fi
-		if [ "$XDG_CURRENT_DESKTOP" = "niri" ] && ! awww query -n overview-bg >/dev/null 2>&1; then
-			awww-daemon -n overview-bg --no-cache & # INFO: daemon
-		fi
-		# transition to same image cache is unusable in multi-namespace usage
-		awww img -t none -- "$XDG_CACHE_HOME/wallpaper" # detaches
-		if [ "$XDG_CURRENT_DESKTOP" = "niri" ]; then
-			awww img -n overview-bg -t none -- "$XDG_CACHE_HOME/wallpaper-blurred"
-		fi
-	fi
+	noctalia msg wallpaper-set "$XDG_CACHE_HOME/wallpaper" || true
+  noctalia msg theme-mode-set $THEME || true
 	echo "END"
-} 2>&1 | log awww &
-
-{
-	echo "START"
-	GTK_THEME="adw-gtk3"
-	COLORSCHEME="prefer-light"
-	if [ "$THEME" = "dark" ]; then
-		GTK_THEME="adw-gtk3-dark"
-		COLORSCHEME="prefer-dark"
-	fi
-	gsettings set org.gnome.desktop.interface gtk-theme $GTK_THEME
-	gsettings set org.gnome.desktop.interface color-scheme $COLORSCHEME
-	echo "END"
-} 2>&1 | log gsettings &
-
-{
-	echo "START"
-	if command -v wallust >/dev/null 2>&1; then
-		REAL_WALLPAPER_LOCATION="$(readlink "$XDG_CACHE_HOME/wallpaper")"
-		{
-			wallust run -p "$THEME"16 --dynamic-threshold -- "$REAL_WALLPAPER_LOCATION"
-			echo "END"
-		} &
-	fi
-} 2>&1 | log wallust &
-
-{
-	echo "START"
-	if command -v waybar >/dev/null 2>&1; then
-		nohup waybar "--style $XDG_CACHE_HOME/waybar.css" >/dev/null 2>&1 & # INFO: daemon
-	fi
-	echo "END"
-} 2>&1 | log waybar &
+} 2>&1 | log noctalia &

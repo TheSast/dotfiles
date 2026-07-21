@@ -111,7 +111,6 @@
         });
       '';
     };
-    pam.services.hyprlock = {};
     sudo.enable = false;
     wrappers = {
       su.enable = false;

@@ -1,26 +1,67 @@
 {
   config,
   pkgs,
-  pkgs-unstable,
-  lib,
   inputs,
   ...
 }: let
   flakeLoc = "${config.xdg.configHome}/etc";
   symlinkDirectly = p: config.lib.file.mkOutOfStoreSymlink ("${flakeLoc}/home/" + p);
+  gsettings-schemas = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.pname}-${pkgs.gsettings-desktop-schemas.version}";
 in {
   services.gnome-keyring.enable = true;
   home.packages = with pkgs; [
-    niri
-    awww
-    imagemagick
-    wl-mirror
+    playerctl
+    tofi
+    udiskie
+    glib
+    libnotify
     kanshi
-    inputs.nfsm.packages.${pkgs.stdenv.hostPlatform.system}.nfsm
-    inputs.nfsm.packages.${pkgs.stdenv.hostPlatform.system}.nfsm-cli
-    mako
+    niri
+    inputs.noctalia.packages."${pkgs.stdenv.hostPlatform.system}".default
+    wl-mirror
   ];
+  gtk = {
+    enable = true;
+    gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+    gtk3 = {
+      theme = config.gtk.theme;
+      extraCss = ''@import url("noctalia.css");'';
+    };
+    gtk4 = {
+      theme = config.gtk.theme;
+      extraCss = ''@import url("noctalia.css");'';
+    };
+    cursorTheme = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Ice";
+    };
+    theme = {
+      package = pkgs.adw-gtk3;
+      name = "adw-gtk3";
+    };
+    iconTheme = {
+      package = pkgs.adwaita-icon-theme;
+      name = "Adwaita";
+    };
+  };
+  qt = {
+    enable = true;
+    platformTheme.name = "qt6ct";
+    style.name = config.qt.qt6ctSettings.Appearance.style;
+    qt6ctSettings = {
+      Appearance = {
+        color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/noctalia.conf";
+        custom_palette = true;
+        standard_dialogs = "default";
+        style = "Fusion";
+      };
+    };
+  };
+  systemd.user.sessionVariables.GSETTINGS_SCHEMAS = gsettings-schemas;
   xdg = {
+    systemDirs = {
+      data = [gsettings-schemas];
+    };
     portal = {
       enable = true;
       xdgOpenUsePortal = true;
@@ -33,17 +74,49 @@ in {
       ];
     };
     configFile = {
+      kanshi = {
+        source = ./kanshi;
+      };
       niri = {
         source = symlinkDirectly "niri";
       };
+      noctalia = {
+        source = ./noctalia;
+        recursive = true;
+      };
+      noctalia-xdg = {
+        text =
+          /*
+          toml
+          */
+          ''
+            [theme.templates.user.tty]
+            input_path = '${config.xdg.configHome}/noctalia/templates/tty'
+            output_path = '${config.xdg.cacheHome}/noctalia-templates/tty'
+
+            [theme.templates.user.tofi]
+            input_path = '${config.xdg.configHome}/noctalia/templates/tofi'
+            output_path = '${config.xdg.cacheHome}/noctalia-templates/tofi'
+          '';
+        target = "noctalia/xdg.toml";
+        recursive = true;
+      };
+      tofi = {
+        source = ./tofi;
+        recursive = true;
+      };
+      tofi-inclues = {
+        text =
+          /*
+          conf
+          */
+          ''
+            include = ${config.xdg.cacheHome}/noctalia-templates/tofi
+          '';
+        target = "tofi/includes";
+      };
       xdg-desktop-portal = {
         source = ./xdg-desktop-portal;
-      };
-      mako = {
-        source = ./mako;
-      };
-      kanshi = {
-        source = ./kanshi;
       };
     };
   };

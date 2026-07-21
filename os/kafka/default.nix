@@ -20,6 +20,7 @@
     memoryPercent = 25;
     priority = 100;
   };
+  services.upower.enable = true;
 
   # systemd.network.wait-online.enable = false; # to solve slow boot times, try systemd-analyze plot > slowboot.svg
   # https://github.com/google/fscrypt/issues/405
