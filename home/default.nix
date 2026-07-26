@@ -123,6 +123,7 @@ in {
     onefetch
     ouch
     ripgrep
+    inputs.ragenix.packages."${pkgs.stdenv.hostPlatform.system}".default
     swayimg
     tabiew
     tmux
