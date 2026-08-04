@@ -3,35 +3,37 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
-# ++ ./log.sh.runtimeInputs
-# runtimeInputs = [coreutils noctalia udiskie kanshi]
+# runtimeInputs = [coreutils systemd noctalia udiskie kanshi]
 # ++ ./corn.sh.runtimeInputs;
 
-# shellcheck source=./log.sh
-. "$XDG_CONFIG_HOME/scripts/log.sh"
-STATE="$XDG_STATE_HOME/niri-init"
-mkdir -p "$STATE"
-
-{
-	if ! [ -f "$XDG_STATE_HOME"/noctalia/settings.toml ]; then
-		mkdir -p "$XDG_STATE_HOME"/noctalia
-		cp "$XDG_CONFIG_HOME"/noctalia/settings-backup/settings.toml "$XDG_STATE_HOME"/noctalia/settings.toml
+run() {
+	UNIT_NAME="$1"
+	if [ -f "$UNIT_NAME" ]; then
+		UNIT_NAME=$(basename "$UNIT_NAME")
 	fi
+	systemd-run --user \
+		--unit="$UNIT_NAME"-transient \
+		--property=Restart=on-failure \
+		--property=RestartSec=2 \
+		--property=PartOf=niri.service \
+		--property=BindsTo=niri.service \
+		"$@"
+}
 
-	# `noctalia` which is v5, lacks various features, notably:
-	# privacy-indicator plugin
-	# usb-device-manager plugin
-	# (global) inversion of scroll direction
-	noctalia >/dev/null 2>&1 &
+if ! [ -f "$XDG_STATE_HOME"/noctalia/settings.toml ]; then
+	mkdir -p "$XDG_STATE_HOME"/noctalia
+	cp "$XDG_CONFIG_HOME"/noctalia/settings-backup/settings.toml "$XDG_STATE_HOME"/noctalia/settings.toml
+fi
 
-	udiskie --tray >/dev/null 2>&1 &
+# `noctalia` which is v5, lacks various features, notably:
+# privacy-indicator plugin
+# usb-device-manager plugin
+# (global) inversion of scroll direction
+run noctalia &
 
-	kanshi >/dev/null 2>&1 &
+run udiskie --tray &
+
+run kanshi &
 
 
-	if [ "$(hostname)" = "kafka" ]; then
-		hypridle >/dev/null 2>&1 &
-	fi
-
-	"$XDG_CONFIG_HOME"/scripts/corn.sh --startup >/dev/null 2>&1 &
-} | log niri-init.sh >>"$STATE/niri-init.log" 2>&1
+run "$XDG_CONFIG_HOME"/scripts/corn.sh --startup
