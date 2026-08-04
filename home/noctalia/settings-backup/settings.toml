@@ -1,4 +1,4 @@
-config_version = 2
+config_version = 12
 
 [backdrop]
 enabled = true
@@ -6,8 +6,8 @@ tint_intensity = 0.0
 
 [bar.default]
 background_opacity = 0.89999997988343239
-center = [ "media" ]
-end = [ "notifications", "network", "bluetooth", "volume", "battery", "clock", "tray" ]
+center = [ "media", "group:g1", "widget_2" ]
+end = [ "notifications", "volume", "battery", "clock", "tray" ]
 layer = "overlay"
 margin_ends = 0
 padding = 12
@@ -22,14 +22,38 @@ start = [ "control-center", "workspaces" ]
 thickness = 42
 widget_spacing = 12
 
-    [bar.default.dead_zone]
-    command = "noctalia msg panel-toggle launcher"
+    [bar.default.dead_zone.actions]
+    left = "exec noctalia msg panel-toggle launcher"
+    right = "none"
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "widget", "bar" ]
+    opacity = 1.0
+    padding = 6.0
 
 [battery]
 warning_threshold = 15
 
 [control_center]
-hidden_tabs = [ "weather", "screen-time" ]
+hidden_tabs = [
+    "media",
+    "audio",
+    "monitor",
+    "system",
+    "power",
+    "network",
+    "bluetooth",
+    "weather",
+    "calendar",
+    "notifications",
+    "screen-time"
+]
+sidebar = "none"
 sidebar_section = "none"
 width = 750
 
@@ -89,7 +113,8 @@ widget_order = [
     "lockscreen-login-box@DP-1",
     "lockscreen-login-box@eDP-1",
     "lockscreen-widget-0000000000000001",
-    "lockscreen-widget-0000000000000002"
+    "lockscreen-widget-0000000000000002",
+    "lockscreen-widget-0000000000000003"
 ]
 
     [lockscreen_widgets.grid]
@@ -98,8 +123,8 @@ widget_order = [
     visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
-    box_height = 70.0
-    box_width = 400.0
+    box_height = 196.0
+    box_width = 720.0
     cx = 960.0
     cy = 961.0
     output = "DP-1"
@@ -113,14 +138,18 @@ widget_order = [
         center_password_text = false
         input_opacity = 1.0
         input_radius = 6.0
+        layout = "regular"
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
-        show_password_hint = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
-    box_height = 70.0
-    box_width = 400.0
+    box_height = 128.0
+    box_width = 720.0
     cx = 800.0
     cy = 881.0
     output = "eDP-1"
@@ -134,10 +163,14 @@ widget_order = [
         center_password_text = true
         input_opacity = 1.0
         input_radius = 6.0
+        layout = "regular"
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = false
-        show_password_hint = true
+        show_media = false
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = false
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
     box_height = 96.0
@@ -156,9 +189,9 @@ widget_order = [
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000002]
     box_height = 128.0
-    box_width = 400.0
-    cx = 800.0
-    cy = 724.0
+    box_width = 384.0
+    cx = 288.0
+    cy = 500.0
     output = "eDP-1"
     rotation = 0.0
     type = "media_player"
@@ -166,6 +199,33 @@ widget_order = [
         [lockscreen_widgets.widget.lockscreen-widget-0000000000000002.settings]
         background = true
         hide_when_no_media = true
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
+    box_height = 128.0
+    box_width = 80.0
+    cx = 384.0
+    cy = 881.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "yocraft/battery-widget:widget"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
+        background = true
+        background_color = "surface"
+        background_opacity = 0.80000000000000004
+        background_padding = 10
+        background_radius = 12
+        battery = "auto"
+        battery_name = "BAT0"
+        charging_color = "on_surface"
+        color = "on_surface"
+        hide_full = true
+        hide_plugged = false
+        layout = "vertical"
+        refresh_interval = 60
+        show_glyph = true
+        show_label = true
+        warning_color = "error"
 
 [nightlight]
 enabled = true
@@ -176,8 +236,27 @@ layer = "overlay"
 [osd]
 position = "bottom_center"
 
+[plugin_settings."alexander/screen-toolkit"]
+panel-full_open_near_click = true
+panel-full_placement = "attached"
+panel_open_near_click = true
+panel_placement = "attached"
+result_open_near_click = true
+result_placement = "attached"
+
+[plugin_settings."frai3mega/battery-graph"]
+battery-panel_open_near_click = true
+battery-panel_placement = "attached"
+
+[plugin_settings."whyoolw/sharednd"]
+only_active = true
+
+[plugin_settings."yocraft/qrcode"]
+panel_open_near_click = true
+panel_placement = "attached"
+
 [plugins]
-enabled = [ "elijaharch/wl-screen-mirror" ]
+enabled = [ "elijaharch/wl-screen-mirror", "noctalia/kaomoji", "yocraft/battery-widget", "whyoolw/sharednd" ]
 
 [shell]
 button_borders = false
@@ -207,7 +286,7 @@ show_location = false
     open_near_click_session = true
     open_near_click_wallpaper = true
     polkit_placement = "attached"
-    session_placement = "floating"
+    session_position = "center"
 
     [shell.screenshot]
     copy_to_clipboard = false
@@ -289,9 +368,17 @@ transition_on_startup = true
 [weather]
 enabled = false
 
+[widget.bar]
+type = "icefish/phone-connect:bar"
+
 [widget.battery]
 display_mode = "graphic"
 show_label = false
+
+    [widget.battery.actions]
+    right = "panel-toggle control-center monitor"
+    scroll_down = "brightness-down"
+    scroll_up = "brightness-up"
 
 [widget.bluetooth]
 enabled = false
@@ -299,10 +386,16 @@ enabled = false
 [widget.brightness]
 show_label = false
 
+[widget.clock.actions]
+right = "panel-toggle control-center screen-time"
+
 [widget.control-center]
 custom_image = "/home/u/.config/etc/home/noctalia/NixOS.svg"
 custom_image_colorize = true
 scale = 1.4000000000000001
+
+    [widget.control-center.actions]
+    right = "panel-toggle control-center system"
 
 [widget.media]
 art_size = 30
@@ -313,11 +406,22 @@ enabled = false
 
 [widget.tray]
 drawer = true
+drawer_item_size = 20.0
+scale = 1.1500000000000001
 
 [widget.volume]
 show_label = false
 
+[widget.widget]
+type = "alexander/screen-toolkit:widget"
+
+[widget.widget_2]
+type = "yocraft/qrcode:widget"
+
 [widget.workspaces]
-display = "none"
+focused_output_only = true
 hide_when_empty = true
-ide_when_empty = true
+show_labels = false
+
+    [widget.workspaces.actions]
+    right = "exec niri msg action toggle-overview"
