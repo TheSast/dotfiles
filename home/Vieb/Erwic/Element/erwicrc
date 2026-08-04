@@ -1,3 +1,4 @@
 source ../shared.vieb
 set nativenotification=smallonly
+set permissionsallowed+=app.element.io~persistentstorage
 " vim: ft=vim

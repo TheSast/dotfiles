@@ -11,6 +11,7 @@ in {
   imports = [
     ./secrets.nix
     ./niri.nix
+    ./vieb.nix
   ];
   home = {
     username = "u";
@@ -128,28 +129,6 @@ in {
     tabiew
     tmux
     trash-cli
-    (pkgs.symlinkJoin {
-      # This wrapper prevents chromium from reading custom gtk css
-      # If chromium reads custom gtk css, it stops listening for
-      # dconf/gsettings colorscheme changes
-      name = "vieb-wrapped";
-      paths = [
-        (inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
-          electron = pkgs.electron_42;
-        })
-      ];
-      nativeBuildInputs = [pkgs.makeWrapper];
-      postBuild = ''
-        mkdir -p $out/hacks/empty
-        mkdir -p $out/hacks/bin
-        mv $out/bin/vieb $out/hacks/bin/vieb.real
-        makeWrapper ${pkgs.bubblewrap}/bin/bwrap $out/bin/vieb \
-          --add-flags "--dev-bind / /" \
-          --add-flags "--bind $out/hacks/empty \"\''${XDG_CONFIG_HOME:-\$HOME/.config}/gtk-3.0"\" \
-          --add-flags "--bind $out/hacks/empty \"\''${XDG_CONFIG_HOME:-\$HOME/.config}/gtk-4.0"\" \
-          --add-flags "$out/hacks/bin/vieb.real"
-      '';
-    })
     # luakit
     # qutebrowser
     # vimb
@@ -167,67 +146,6 @@ in {
   home.preferXdgDirectories = true;
   xdg = {
     enable = true;
-    desktopEntries = {
-      Discord = {
-        name = "Discord";
-        genericName = "Messaging Platform";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Discord/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Discord --disable-features=WebRtcAllowInputVolumeAdjustment https://discord.com/app";
-        icon = "${config.xdg.configHome}/Vieb/Erwic/Discord/icon.png";
-        terminal = false;
-        type = "Application";
-        categories = [
-          "Network"
-          "Chat"
-          "InstantMessaging"
-        ];
-      };
-      Element = {
-        name = "Element";
-        genericName = "Messaging Platform";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Element/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Element https://app.element.io/";
-        icon = "${config.xdg.configHome}/Vieb/Erwic/Element/icon.png";
-        terminal = false;
-        type = "Application";
-        categories = [
-          "Network"
-          "Chat"
-          "InstantMessaging"
-        ];
-      };
-      Bitwarden = {
-        name = "Bitwarden";
-        genericName = "Password Manager";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Bitwarden/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Bitwarden https://vault.bitwarden.com/";
-        icon = "${config.xdg.configHome}/Vieb/Erwic/Bitwarden/icon.png";
-        terminal = false;
-        type = "Application";
-        categories = ["Network"];
-      };
-      Protonmail = {
-        name = "Proton Mail";
-        genericName = "Electronic Mail Client";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/Proton_Mail/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/Proton_Mail https://mail.proton.me/";
-        icon = "${config.xdg.configHome}/Vieb/Erwic/Proton_Mail/icon.png";
-        terminal = false;
-        type = "Application";
-        categories = [
-          "Network"
-          "Email"
-        ];
-      };
-      YouTube = {
-        name = "YouTube";
-        genericName = "Video Streaming Platform";
-        exec = "vieb --config-file=${config.xdg.configHome}/Vieb/Erwic/YouTube/erwicrc --datafolder=${config.xdg.stateHome}/Erwic/YouTube https://youtube.com/";
-        icon = "${config.xdg.configHome}/Vieb/Erwic/YouTube/icon.png";
-        terminal = false;
-        type = "Application";
-        categories = [
-          # "Network"
-          "AudioVideo"
-        ]; # only one main category
-      };
-    };
     mimeApps = {
       enable = true;
     };
@@ -327,10 +245,6 @@ in {
       tmux-powerline = {
         source = ./tmux-powerline;
       };
-      Vieb = {
-        source = ./Vieb;
-        recursive = true;
-      };
     };
     # list executables via `ls -1  $XDG_STATE_DIR/nix/profile/bin/ | sed -E 's%.*-> .{43}-%%g' | sort`
     dataFile = {
@@ -353,9 +267,6 @@ in {
           eval "$(${lib.getExe pkgs.starship} init bash)"
         ''
         + (builtins.readFile ./bash/nonlogin.bash);
-    };
-    ".vieb" = {
-      source = ./Vieb;
     };
     ".ssh/config" = {
       source = ./ssh/config;
@@ -390,8 +301,6 @@ in {
     XDG_DESKTOP_DIR = config.xdg.userDirs.desktop;
     XDG_VIDEOS_DIR = config.xdg.userDirs.videos;
     XDG_MUSIC_DIR = config.xdg.userDirs.music;
-    VIEB_CONFIG_FILE = "${config.xdg.configHome}/Vieb/viebrc";
-    VIEB_DATAFOLDER = "${config.xdg.stateHome}/Vieb";
     NVIM_APPNAME = "astronvim";
     VISUAL = "nvim";
     ELECTRON_OZONE_PLATFORM_HINT = "auto"; # enable wayland detection for some electron apps (notably: yes obsidian, yes vieb)
