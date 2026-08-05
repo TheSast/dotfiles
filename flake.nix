@@ -26,6 +26,10 @@
       url = "github:nixos/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     # user
     home-manager = {
@@ -42,6 +46,11 @@
     };
     vieb = {
       url = "github:tejing1/vieb-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -75,21 +84,19 @@
       kafka = inputs.nixpkgs.lib.nixosSystem {
         modules = [
           disko-withTPM2.nixosModules.disko
-          inputs.preservation.nixosModules.default
           inputs.hardware.nixosModules.framework-16-amd-ai-300-series
           ./os
           ./os/kafka
-          ./os/kafka/hardware.nix
-          ./os/kafka/preservation.nix
-          ./os/kafka/disko.nix
         ];
         specialArgs = {inherit inputs;};
       };
-      firefly = inputs.nixpkgs.lib.nixosSystem {
+      firefly = inputs.nixpkgs-unstable.lib.nixosSystem {
         modules = [
+          disko-withTPM2.nixosModules.disko
+          inputs.jovian.nixosModules.default
+          inputs.hardware.nixosModules.framework-16-amd-ai-300-series
           ./os
           ./os/firefly
-          ./os/firefly/hardware.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -104,8 +111,8 @@
         ];
         extraSpecialArgs = {inherit inputs pkgs-unstable;};
       };
-      "u@firefly" = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+      "u@firefly" = inputs.home-manager-unstable.lib.homeManagerConfiguration {
+        pkgs = pkgs-unstable;
         modules = [
           ./home
           ./home/firefly

@@ -10,6 +10,20 @@
   ];
 
   boot = {
+    loader.limine = {
+      enable = true;
+      style = {
+        wallpapers = [];
+        interface = {
+          helpHidden = true;
+          branding = "";
+        };
+      };
+      extraConfig = ''
+        timeout: 0.25
+        quiet: yes
+      '';
+    };
     plymouth = {
       enable = true;
       theme = "breeze";

@@ -58,7 +58,7 @@ index 4b8b95a..d5afb48 100644
                qemu.options = lib.mkIf enableCanokey [
                  "-device pci-ohci,id=usb-bus"
 diff --git a/lib/types/luks.nix b/lib/types/luks.nix
-index 9fc0b02..1c36600 100644
+index 9fc0b02..2652515 100644
 --- a/lib/types/luks.nix
 +++ b/lib/types/luks.nix
 @@ -9,7 +9,7 @@
@@ -86,12 +86,12 @@ index 9fc0b02..1c36600 100644
 +    enrollTPM2 = lib.mkOption {
 +      type = lib.types.bool;
 +      default = config.enrollFinalTPM2PostInstall;
-+      description = "Whether to enroll a temporary TPM2 bootstrap key to later enroll a TPM2 token";
++      description = "Whether to enroll a TPM2 token. This enrollment is intended for bootstrapping, thus it omits PCR bindings. For stronger security with PCR-based policies, use `enrollFinalTPM2PostInstall`.";
 +    };
 +    enrollFinalTPM2PostInstall = lib.mkOption {
 +      type = lib.types.bool;
 +      default = false;
-+      description = "Whether to generate a NixOS systemd service to enroll a TPM2 token after first boot, this allows proper PCRs to be configured via `extraFinalTPM2EnrollArgs`";
++      description = "Whether to generate a NixOS systemd service to enroll a final TPM2 token after first boot, this allows proper PCRs to be configured via `extraFinalTPM2EnrollArgs`";
 +    };
 +    extraFinalTPM2EnrollArgs = lib.mkOption {
 +      type = lib.types.listOf lib.types.str;
@@ -99,7 +99,7 @@ index 9fc0b02..1c36600 100644
 +      example = [
 +        "--tpm2-pcrs=4+7"
 +      ];
-+      description = "Extra arguments to pass to `systemd-cryptenroll` when enrolling the TPM2 token";
++      description = "Extra arguments to pass to `systemd-cryptenroll` when enrolling the final TPM2 token";
 +    };
      enrollRecovery = lib.mkOption {
        type = lib.types.bool;
@@ -200,7 +200,7 @@ index 9fc0b02..1c36600 100644
          ])
          ++ (lib.optional (config.content != null) config.content._config);
 diff --git a/module.nix b/module.nix
-index 1094a5c..5c9f583 100644
+index 1094a5c..336cea4 100644
 --- a/module.nix
 +++ b/module.nix
 @@ -243,15 +243,18 @@ in
@@ -217,7 +217,7 @@ index 1094a5c..5c9f583 100644
 -        '';
 -      }
 +    assertions = lib.mkMerge [
-+      cfg.devices._config.assertions
++      cfg.devices._config.assertions or []
 +      [
 +        {
 +          assertion = config.disko.imageBuilder.qemu != null -> diskoLib.vmToolsSupportsCustomQemu lib;
@@ -241,10 +241,10 @@ index 1094a5c..5c9f583 100644
  }
 diff --git a/tests/luks-tpm2.nix b/tests/luks-tpm2.nix
 new file mode 100644
-index 0000000..60ab010
+index 0000000..7283653
 --- /dev/null
 +++ b/tests/luks-tpm2.nix
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,18 @@
 +{
 +  pkgs ? import <nixpkgs> { },
 +  diskoLib ? pkgs.callPackage ../lib { },
@@ -258,7 +258,6 @@ index 0000000..60ab010
 +    machine.succeed("cryptsetup isLuks /dev/vda2");
 +    machine.succeed("mountpoint /");
 +
-+    machine.succeed("ls -l /dev/tpm*");
 +    machine.succeed("systemd-cryptenroll /dev/vda2 | grep -qw tpm2")
 +    # Recovery should be disabled
 +    machine.fail("systemd-cryptenroll /dev/vda2 | grep -qw recovery")

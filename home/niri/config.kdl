@@ -1,13 +1,7 @@
-// passing via `sh -c` doesn't propagate SIGHUP properly
-spawn-at-startup "~/.config/scripts/niri-init.sh"
-// there is no way to use $XDG_PICTURES_DIR
-screenshot-path "~/Pictures/Screenshots/%Y/%m/%d/%H-%M-%S.png"
-prefer-no-csd
+include "xdg.kdl"
+include optional=true "host.kdl"
 
-xwayland-satellite {
-    // NOTE: comment out on host firefly
-    off
-}
+prefer-no-csd
 
 hotkey-overlay {
     skip-at-startup
@@ -29,13 +23,6 @@ input {
 
     focus-follows-mouse
     warp-mouse-to-focus
-
-    touchpad {
-        tap
-        dwt
-        natural-scroll
-        drag-lock
-    }
 }
 
 cursor {
@@ -46,13 +33,6 @@ gestures {
     hot-corners {
         off
     }
-}
-
-output "eDP-1" {
-    scale 1.6
-    position x=0 y=0
-    focus-at-startup
-    variable-refresh-rate
 }
 
 layout {
@@ -189,10 +169,6 @@ debug {
     honor-xdg-activation-with-invalid-serial
 }
 
-switch-events {
-    lid-close { spawn "loginctl" "lock-session"; }
-}
-
 window-rule {
     match app-id="at.yrlf.wl_mirror"
     open-fullscreen true
@@ -201,11 +177,21 @@ window-rule {
 }
 
 window-rule {
-    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
-    default-floating-position x=10 y=10 relative-to="bottom-right"
+    match app-id="xdg-desktop-portal-gtk"
+    open-floating false
 }
 
 window-rule {
-    match app-id="xdg-desktop-portal-gtk"
+    match app-id="xdg-desktop-portal-gnome" title="Share Screen"
+    open-floating false
+}
+
+window-rule {
+    match app-id="electron" title="Display capture"
+    open-floating false
+}
+
+window-rule {
+    match app-id="electron" title=r#"^Allow this page to access '.*'\?$"#
     open-floating false
 }

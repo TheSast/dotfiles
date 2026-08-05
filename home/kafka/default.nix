@@ -1,4 +1,7 @@
 {pkgs, ...}: {
+  imports = [
+    ./niri.nix
+  ];
   home.stateVersion = "23.05"; # WARNING: do not touchy
   home.packages = let
     kdeconnectNoDesktop = pkgs.symlinkJoin {

@@ -1,0 +1,23 @@
+xwayland-satellite {
+    off
+}
+
+switch-events {
+    lid-close { spawn "loginctl" "lock-session"; }
+}
+
+output "eDP-1" {
+    scale 1.6
+    position x=0 y=0
+    focus-at-startup
+    variable-refresh-rate
+}
+
+input {
+    touchpad {
+        tap
+        dwt
+        natural-scroll
+        drag-lock
+    }
+}

@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
-# runtimeInputs = [coreutils systemd noctalia udiskie kanshi kdeconnectd]
+# runtimeInputs = [coreutils systemd noctalia udiskie kanshi kdeconnectd steam]
 # ++ ./corn.sh.runtimeInputs;
 
 run() {
@@ -20,10 +20,15 @@ run() {
 		"$@"
 }
 
-if ! [ -f "$XDG_STATE_HOME"/noctalia/settings.toml ]; then
+if [ -f "$XDG_STATE_HOME"/noctalia/settings.toml ]; then
+	cp "$XDG_STATE_HOME"/noctalia/settings.toml "$XDG_CONFIG_HOME"/etc/home/noctalia/settings-backup/"$(hostname)".toml
+else
 	mkdir -p "$XDG_STATE_HOME"/noctalia
-	cp "$XDG_CONFIG_HOME"/noctalia/settings-backup/settings.toml "$XDG_STATE_HOME"/noctalia/settings.toml
+	cp "$XDG_CONFIG_HOME"/noctalia/settings-backup/"$(hostname)".toml "$XDG_STATE_HOME"/noctalia/settings.toml
 fi
+# TODO: also apply to plugin config data
+
+rm "$XDG_CACHE_HOME"/tofi-drun -f
 
 # `noctalia` which is v5, lacks various features, notably:
 # privacy-indicator plugin
@@ -33,10 +38,14 @@ run noctalia &
 
 run udiskie --tray &
 
-run kanshi &
-
 if [ "$(hostname)" = "kafka" ]; then
+	run kanshi &
+
 	run kdeconnectd &
+fi
+
+if [ "$(hostname)" = "firefly" ]; then
+	run steam -nochatui -nofriendsui -silent &
 fi
 
 run "$XDG_CONFIG_HOME"/scripts/corn.sh --startup

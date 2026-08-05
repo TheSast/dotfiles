@@ -1,0 +1,86 @@
+{
+  "current": {
+    "DP-3": "2722481044"
+  },
+  "cycle": {
+    "DP-3": {
+      "enabled": false,
+      "minutes": 15,
+      "order": "sequential"
+    }
+  },
+  "defaults": {
+    "engine": {
+      "fps": 60,
+      "fullscreen_pause_only_active": true,
+      "scaling": "fill",
+      "silent": true
+    }
+  },
+  "favorites": {},
+  "options": {
+    "1659751657": {
+      "engine": {},
+      "properties": {}
+    },
+    "2530355779": {
+      "engine": {
+        "disable_particles": false
+      },
+      "properties": {
+        "hrzoomhr": 0.78
+      }
+    },
+    "2569393277": {
+      "engine": {},
+      "properties": {
+        "displayaudiobars": false
+      }
+    },
+    "2722481044": {
+      "engine": {
+        "scaling": "fit"
+      },
+      "properties": {
+        "_24hoursclock": false,
+        "date": false,
+        "intro": false,
+        "seagulls": true,
+        "waterwaves": true
+      }
+    },
+    "785216588": {
+      "engine": {},
+      "properties": {}
+    }
+  },
+  "personnalPath": {},
+  "saved_wallpaper": {
+    "DP-3": "/home/u/.local/share/Steam/steamapps/workshop/content/431960/2100887171/preview.jpg"
+  },
+  "selection": {
+    "DP-3": [
+      "2251496381",
+      "1659751657",
+      "2247279526",
+      "1599232205",
+      "2569393277",
+      "1364366384",
+      "2257550050",
+      "1326866242",
+      "1870162154",
+      "2712973442",
+      "1682263992",
+      "2100887171",
+      "2203383206",
+      "2407696443",
+      "2071326584",
+      "785216588",
+      "2806836016",
+      "2418499337",
+      "3516174947",
+      "2667038219",
+      "1835441855"
+    ]
+  }
+}

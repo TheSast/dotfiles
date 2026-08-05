@@ -12,6 +12,7 @@ in {
     ./secrets.nix
     ./niri.nix
     ./vieb.nix
+    ./modules
   ];
   home = {
     username = "u";

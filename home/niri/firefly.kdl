@@ -1,0 +1,43 @@
+xwayland-satellite {
+  on
+}
+
+output "DP-3" {
+    scale 1.4
+    mode "2560x1440"
+    position x=0 y=0
+    focus-at-startup
+    variable-refresh-rate on-demand=true
+}
+
+input {
+    mouse {
+        accel-profile "flat"
+    }
+}
+
+// https://github.com/niri-wm/niri/discussions/4047
+window-rule {
+    // match is-fullscreen=true
+    // match content-type="game"
+    // variable-refresh-rate true
+}
+
+// steam startup / update window
+window-rule {
+    match title="^$"
+    open-floating false
+    default-floating-position x=0 y=0 relative-to="bottom-right"
+}
+
+window-rule {
+    match app-id="steam"
+    exclude title=r#"^notificationtoasts_\d+_desktop$"#
+    open-fullscreen false
+}
+
+window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+    open-focused false
+}

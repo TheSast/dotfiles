@@ -15,7 +15,6 @@ in {
     udiskie
     glib
     libnotify
-    kanshi
     niri
     inputs.noctalia.packages."${pkgs.stdenv.hostPlatform.system}".default
     wl-mirror
@@ -74,11 +73,31 @@ in {
       ];
     };
     configFile = {
-      kanshi = {
-        source = ./kanshi;
-      };
       niri = {
-        source = symlinkDirectly "niri";
+        source = symlinkDirectly "niri/config.kdl";
+        target = "niri/config.kdl";
+        recursive = true;
+      };
+      niri-kafka = {
+        source = symlinkDirectly "niri/kafka.kdl";
+        target = "niri/kafka.kdl";
+        recursive = true;
+      };
+      niri-firefly = {
+        source = symlinkDirectly "niri/firefly.kdl";
+        target = "niri/firefly.kdl";
+        recursive = true;
+      };
+      niri-xdg = {
+        text =
+          /*
+          kdl
+          */
+          ''
+            spawn-at-startup "${config.xdg.configHome}/scripts/niri-init.sh"
+            screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/%Y/%m/%d/%H-%M-%S.png"
+          '';
+        target = "niri/xdg.kdl";
       };
       noctalia = {
         source = ./noctalia;

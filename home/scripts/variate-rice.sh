@@ -12,17 +12,19 @@ set -o nounset
 THEME=$("$XDG_CONFIG_HOME/scripts/theme.sh")
 export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
 
-{
-	echo "START"
-	WALLPAPER_DIR="$XDG_PICTURES_DIR/wallpapers"
-	find_wallpaper() {
-		find "$WALLPAPER_DIR" -type f -path "*/$THEME/*" -not -path "*/.*" | shuf -n 1
-	}
-	WALLPAPER="$(find_wallpaper)"
-	echo "$WALLPAPER"
-	ln -sf "$WALLPAPER" "$XDG_CACHE_HOME/wallpaper"
-	echo "END"
-} 2>&1 | log wallpaper
+if [ "$(hostname)" = "kafka" ]; then
+	{
+		echo "START"
+		WALLPAPER_DIR="$XDG_PICTURES_DIR/wallpapers"
+		find_wallpaper() {
+			find "$WALLPAPER_DIR" -type f -path "*/$THEME/*" -not -path "*/.*" | shuf -n 1
+		}
+		WALLPAPER="$(find_wallpaper)"
+		echo "$WALLPAPER"
+		ln -sf "$WALLPAPER" "$XDG_CACHE_HOME/wallpaper"
+		echo "END"
+	} 2>&1 | log wallpaper
+fi
 
 {
 	echo "START"
