@@ -78,6 +78,11 @@ in {
         target = "niri/config.kdl";
         recursive = true;
       };
+      niri-binds = {
+        source = symlinkDirectly "niri/binds.kdl";
+        target = "niri/binds.kdl";
+        recursive = true;
+      };
       niri-kafka = {
         source = symlinkDirectly "niri/kafka.kdl";
         target = "niri/kafka.kdl";
