@@ -52,7 +52,6 @@ in {
   home.packages = with pkgs; [
     alacritty
     asciinema
-    atuin
     babelfish
     bat
     broot
@@ -190,9 +189,6 @@ in {
       };
       astronvim = {
         source = symlinkDirectly "astronvim";
-      };
-      atuin = {
-        source = ./atuin;
       };
       bat = {
         target = "bat/config";
@@ -552,7 +548,6 @@ in {
         eval (${lib.getExe pkgs.starship} init fish) && enable_transience
         ${lib.getExe pkgs.zoxide} init fish | source
         source ${config.xdg.configHome}/fish/functions/z.fish
-        ${lib.getExe pkgs.atuin} init fish --disable-up-arrow | source
       '';
   };
   news.display = "silent";
