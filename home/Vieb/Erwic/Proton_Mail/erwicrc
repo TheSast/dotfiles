@@ -1,4 +1,4 @@
 source ../shared.vieb
 set nativenotification=always
-set permissionpersistentstorage=allow
+set permissionsallowed+=mail.proton.me~persistentstorage~notifications
 " vim: ft=vim
