@@ -149,6 +149,10 @@ in {
     mimeApps = {
       enable = true;
     };
+    systemDirs = {
+      config = ["\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/etc/xdg"];
+      data = ["\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share"];
+    };
     userDirs = {
       enable = true;
       setSessionVariables = true;
@@ -301,6 +305,12 @@ in {
     NVIM_APPNAME = "astronvim";
     VISUAL = "nvim";
     ELECTRON_OZONE_PLATFORM_HINT = "auto"; # enable wayland detection for some electron apps (notably: yes obsidian, yes vieb)
+    PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin\${PATH:+:$PATH}";
+    INFOPATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share/info\${INFOPATH:+:$INFOPATH}";
+    XCURSOR_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin\${XCURSOR_PATH:+:$XCURSOR_PATH}";
+    TERMINFO_DIRS = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share/terminfo\${TERMINFO_DIRS:+:$TERMINFO_DIRS}";
+    GTK_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-2.0:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-3.0:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-4.0\${GTK_PATH:+:$GTK_PATH}";
+    LIBEXEC_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/libexec\${LIBEXEC_PATH:+:$LIBEXEC_PATH}";
   };
 
   home.shellAliases = {
@@ -396,8 +406,17 @@ in {
         */
         ''
           if test "$argv[1]" = profile
-              echo "Error: 'nix profile' is not declarative. Aborting."
-              return 1
+              if not string match -q -- --profile $argv
+                echo "Info: 'nix profile' is not declarative. The default profile is ephemeral, meaning it's contents will be wiped when the user session ends."
+              end
+              if test (count $argv) -gt 1
+                  mkdir -p $XDG_RUNTIME_DIR/nix-tmpinstall
+                  command nix profile $argv[2] --profile $XDG_RUNTIME_DIR/nix-tmpinstall/profile $argv[3..]
+                  return $status
+              else
+                  command nix $argv
+                  return $status
+              end
           end
           if contains -- "$argv[1]" build shell develop
               if contains -- "$argv[1]" shell develop && not string match -q -- --command $argv && not string match -q -- -c $argv && not string match -q -- --help $argv
