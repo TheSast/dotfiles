@@ -542,15 +542,15 @@
     "vieb": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1778452913,
-        "narHash": "sha256-DCtmbLm66PXvRCg/lkqlig7hLQIC2GnkWLxDy5OjTPk=",
+        "lastModified": 1785890209,
+        "narHash": "sha256-WXKklQAAHO2JZ5v3QtzSHHpUbS7yEBqy1ZstAUH6pIs=",
         "owner": "tejing1",
         "repo": "vieb-nix",
-        "rev": "9bfaa2761e6328e293d8214365da495dcbe20428",
+        "rev": "5f64fe97e316b762afbbd9b35def5f36c8d15359",
         "type": "github"
       },
       "original": {

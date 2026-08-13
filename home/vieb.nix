@@ -12,10 +12,7 @@
         # dconf/gsettings colorscheme changes
         name = "vieb-wrapped";
         paths = [
-          (inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
-            # discord fails to load with older electron versions
-            electron = pkgs.electron_42;
-          })
+          inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default
         ];
         nativeBuildInputs = [pkgs.makeWrapper];
         postBuild = ''
