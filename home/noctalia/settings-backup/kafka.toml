@@ -311,20 +311,21 @@ show_location = false
         variant = "default"
 
         [[shell.session.actions]]
+        action = "suspend"
+        command = "noctalia msg caffeine-disable; systemctl suspend"
+        countdown_seconds = 5.0
+        enabled = true
+        shortcut = "4"
+        variant = "default"
+
+        [[shell.session.actions]]
         action = "command"
-        command = "systemctl hibernate"
+        command = "noctalia msg caffeine-disable; systemctl hibernate"
         countdown_seconds = 5.0
         enabled = true
         glyph = "zzz"
         label = "Hibernate"
         shortcut = "3"
-        variant = "default"
-
-        [[shell.session.actions]]
-        action = "suspend"
-        countdown_seconds = 5.0
-        enabled = true
-        shortcut = "4"
         variant = "default"
 
         [[shell.session.actions]]

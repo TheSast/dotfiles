@@ -1,9 +1,11 @@
 profile laptop-only {
     output "eDP-1" enable
+    exec noctalia msg caffeine-disable
 }
 
 profile external-monitor {
     output "eDP-1" enable
     output "*" enable
     exec sh -c "$XDG_CONFIG_HOME/scripts/variate-rice.sh"
+    exec noctalia msg caffeine-enable
 }
