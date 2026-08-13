@@ -1,7 +1,7 @@
 binds {
     Mod+Escape { toggle-keyboard-shortcuts-inhibit; }
     Mod+N { spawn "alacritty"; }
-    Mod+F { spawn-sh "tofi-drun | /bin/sh"; }
+    Mod+F { spawn-sh "niri msg overview-state | grep -q open || tofi-drun | /bin/sh"; }
     Mod+Alt+F { spawn-sh "noctalia msg panel-toggle launcher"; }
     Mod+Q { close-window; }
     Mod+V { spawn-sh "noctalia msg panel-toggle clipboard"; }
