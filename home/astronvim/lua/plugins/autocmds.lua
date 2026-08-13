@@ -23,15 +23,6 @@ return {
         },
       },
       -- TODO: add auto opt.background! possibly using https://github.com/luxus/colorful-times-nvim or https://github.com/f-person/auto-dark-mode.nvim and https://askubuntu.com/questions/22313/what-is-dconf-what-is-its-function-and-how-do-i-use-it
-      time_based_colorscheme = {
-        {
-          event = "FocusGained",
-          callback = function()
-            local correct_bg = (tonumber(os.date "%H") >= 18 or tonumber(os.date "%H") < 06) and "dark" or "light"
-            if correct_bg ~= vim.opt.background:get() then require("astrocore.toggles").background() end
-          end,
-        },
-      },
     },
   },
 }
