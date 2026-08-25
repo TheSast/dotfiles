@@ -119,7 +119,6 @@ in {
       ''
     ))
     nh
-    onefetch
     ouch
     ripgrep
     inputs.ragenix.packages."${pkgs.stdenv.hostPlatform.system}".default
