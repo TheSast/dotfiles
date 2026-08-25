@@ -164,11 +164,6 @@
       };
     };
   };
-  services.ntp.enable = !config.services.chrony.enable;
-  services.chrony = {
-    enable = true;
-    enableNTS = true;
-  };
 
   services.openssh = {
     enable = true;
