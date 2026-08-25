@@ -98,12 +98,6 @@
           "InstantMessaging"
         ];
       };
-      Bitwarden = mkErwic {
-        name = "Bitwarden";
-        appUrl = "https://vault.bitwarden.com/";
-        genericName = "Password Manager";
-        categories = ["Network"];
-      };
       Protonmail = mkErwic {
         name = "Proton Mail";
         appUrl = "https://mail.proton.me/";

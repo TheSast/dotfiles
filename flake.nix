@@ -48,7 +48,7 @@
       url = "github:tejing1/vieb-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     steam-config-nix = {
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";

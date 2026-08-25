@@ -56,6 +56,9 @@
     ];
   };
 
+  # nautilus
+  services.gvfs.enable = true;
+
   # security
 
   # tpm2

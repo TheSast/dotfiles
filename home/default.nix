@@ -12,6 +12,7 @@ in {
     ./secrets.nix
     ./niri.nix
     ./vieb.nix
+    ./flatpak.nix
     ./modules
   ];
   home = {
@@ -46,7 +47,7 @@ in {
     allowUnfree = false;
     allowUnfreePredicate = pkg:
       builtins.elem (lib.getName pkg) [
-        "obsidian"
+        # I'm free!
       ];
   };
   home.packages = with pkgs; [
@@ -75,8 +76,6 @@ in {
     glow
     inlyne
     lazygit
-    losslesscut-bin
-    mpv
     neovide
     (pkgs.writeShellApplication {
       name = "nvim";
@@ -120,7 +119,6 @@ in {
       ''
     ))
     nh
-    obsidian
     onefetch
     ouch
     ripgrep
@@ -138,7 +136,6 @@ in {
     wf-recorder
     wl-clipboard
     xdg-utils
-    zathura
     zellij
     zoxide
   ];
