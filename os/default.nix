@@ -184,16 +184,9 @@
       overalljails = true;
     };
   };
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    nssmdns6 = true;
-    publish = {
-      enable = true;
-      workstation = true;
-      addresses = true;
-    };
-  };
+
+  # dam
+  services.resolved.enable = true;
 
   system.tools = {
     nixos-enter.enable = false;
