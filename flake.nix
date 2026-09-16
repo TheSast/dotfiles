@@ -133,7 +133,6 @@
         modules = [
           disko-withTPM2.nixosModules.disko
           inputs.jovian.nixosModules.default
-          inputs.hardware.nixosModules.framework-16-amd-ai-300-series
           ./os
           ./os/firefly
         ];
