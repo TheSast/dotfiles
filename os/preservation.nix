@@ -4,8 +4,6 @@
   ];
   fileSystems."/nix".neededForBoot = true;
   fileSystems."/dur".neededForBoot = true;
-  boot.initrd.systemd.suppressedUnits = ["systemd-machine-id-commit.service"];
-  systemd.services.systemd-machine-id-commit.unitConfig.ConditionFirstBoot = true;
   boot.tmp.cleanOnBoot = true;
   preservation = {
     enable = true;
@@ -17,7 +15,6 @@
           how = "symlink";
           inInitrd = true;
         }
-        "/etc/machine-id"
       ];
       directories = [
         "/etc/NetworkManager/system-connections"
