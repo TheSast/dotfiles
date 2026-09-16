@@ -82,12 +82,51 @@
   in {
     nixosConfigurations = {
       kafka = inputs.nixpkgs.lib.nixosSystem {
-        modules = [
-          disko-withTPM2.nixosModules.disko
-          inputs.hardware.nixosModules.framework-16-amd-ai-300-series
-          ./os
-          ./os/kafka
-        ];
+        modules =
+          [
+            inputs.hardware.nixosModules.framework-16-amd-ai-300-series
+            {
+              # INFO: https://github.com/NixOS/nixos-hardware/issues/1743
+
+              # services.pipewire.wireplumber.extraConfig."alsa-framework-16-soft-mixer" = {
+              #   "monitor.alsa.rules" = [
+              #     {
+              #       matches = [
+              #         {
+              #           "device.name" = "alsa_card.pci-0000_c1_00.6";
+              #         }
+              #       ];
+              #       actions = {
+              #         update-props = {
+              #           "api.alsa.soft-mixer" = true;
+              #         };
+              #       };
+              #     }
+              #   ];
+              # };
+              environment.etc."wireplumber/wireplumber.conf.d/alsa-framework-16-soft-mixer.conf".text = ''
+                monitor.alsa.rules = [
+                  {
+                    matches = [
+                      {
+                        device.name = "alsa_card.pci-0000_c1_00.6"
+                      }
+                    ]
+                    actions = {
+                      update-props = {
+                        api.alsa.soft-mixer = true
+                      }
+                    }
+                  }
+                ]
+              '';
+            }
+          ]
+          ++ [
+            disko-withTPM2.nixosModules.disko
+            ./os
+            ./os/kafka
+          ];
         specialArgs = {inherit inputs;};
       };
       firefly = inputs.nixpkgs-unstable.lib.nixosSystem {
