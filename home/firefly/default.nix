@@ -16,6 +16,7 @@
     prismlauncher
     protonup-ng
     xwayland-satellite
+    r2modman
   ];
   # Create Steam CEF debugging file if it doesn't exist for Decky Loader.
   systemd.user.services.steam-cef-debug = {
