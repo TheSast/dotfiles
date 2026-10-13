@@ -3,7 +3,8 @@ xwayland-satellite {
 }
 
 switch-events {
-    lid-close { spawn "sh" "-c" "loginctl lock-session; noctalia msg caffeine-disable"; }
+    lid-close { spawn "sh" "-c" "loginctl lock-session; noctalia msg caffeine-disable; niri msg action power-off-monitors"; }
+    lid-open { spawn "sh" "-c" "niri msg action power-on-monitors"; }
 }
 
 output "eDP-1" {
