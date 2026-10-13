@@ -82,8 +82,14 @@ return {
           ["<C-a>"] = "<NOP>",
           ["<C-c>"] = "<NOP>",
           ["<C-g>"] = "<NOP>", -- TODO: turn {count}<C-g> into an ex command `:ffile`
-          ["<C-n>"] = "<NOP>",
-          ["<C-p>"] = "<NOP>",
+          ["<C-n>"] = {
+            function() require("astrocore.buffer").nav(vim.v.count1) end,
+            desc = "Next buffer",
+          },
+          ["<C-p>"] = {
+            function() require("astrocore.buffer").nav(-vim.v.count1) end,
+            desc = "Previous buffer",
+          },
           ["<C-Q>"] = "<NOP>",
           ["<C-r>"] = "<NOP>",
           ["<C-S>"] = false,
