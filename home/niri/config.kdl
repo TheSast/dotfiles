@@ -113,6 +113,11 @@ window-rule {
 }
 
 window-rule {
+    match title=".*Bitwarden.*"
+    block-out-from "screencast"
+}
+
+window-rule {
     match app-id="xdg-desktop-portal-gtk"
     open-floating false
 }
