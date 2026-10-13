@@ -13,31 +13,28 @@
     onSteamRunning = "close";
     notifications = true;
 
-    apps = {
-      "God of War Ragnarök" = {
-        id = 2322010;
-        launchOptions.env.SteamDeck = 1;
-      };
+    apps."2322010" = {
+      name = "God of War Ragnarök";
+      env.SteamDeck = 1;
     };
+
     nonSteamApps = {
       "Genshin Impact" = {
         target = pkgs.flatpak;
         startIn = config.home.homeDirectory;
-        launchOptions = {
-          args = [
-            "run"
-            "--branch=stable"
-            "--arch=x86_64"
-            "--command=moe.launcher.an-anime-game-launcher"
-            "moe.launcher.an-anime-game-launcher"
-            "--just-run-game"
-          ];
-          preHook = ''
-            if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
-              unset DISPLAY
-            fi
-          '';
-        };
+        args = [
+          "run"
+          "--branch=stable"
+          "--arch=x86_64"
+          "--command=moe.launcher.an-anime-game-launcher"
+          "moe.launcher.an-anime-game-launcher"
+          "--just-run-game"
+        ];
+        preHook = ''
+          if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
+            unset DISPLAY
+          fi
+        '';
         artwork = {
           icon = pkgs.fetchurl {
             url = "https://cdn2.steamgriddb.com/icon/ac4e7a4f341e7281b0f6f274f9ec3905.png";
@@ -64,21 +61,19 @@
       "Honkai: Star Rail" = {
         target = pkgs.flatpak;
         startIn = config.home.homeDirectory;
-        launchOptions = {
-          args = [
-            "run"
-            "--branch=stable"
-            "--arch=x86_64"
-            "--command=moe.launcher.the-honkers-railway-launcher"
-            "moe.launcher.the-honkers-railway-launcher"
-            "--just-run-game"
-          ];
-          preHook = ''
-            if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
-              unset DISPLAY
-            fi
-          '';
-        };
+        args = [
+          "run"
+          "--branch=stable"
+          "--arch=x86_64"
+          "--command=moe.launcher.the-honkers-railway-launcher"
+          "moe.launcher.the-honkers-railway-launcher"
+          "--just-run-game"
+        ];
+        preHook = ''
+          if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
+            unset DISPLAY
+          fi
+        '';
         artwork = {
           icon = pkgs.fetchurl {
             url = "https://cdn2.steamgriddb.com/icon/ec01a34f7fc3b03448cc52f2a89d52e8.png";
@@ -105,21 +100,19 @@
       "Zenless Zone Zero" = {
         target = pkgs.flatpak;
         startIn = config.home.homeDirectory;
-        launchOptions = {
-          args = [
-            "run"
-            "--branch=stable"
-            "--arch=x86_64"
-            "--command=moe.launcher.sleepy-launcher"
-            "moe.launcher.sleepy-launcher"
-            "--just-run-game"
-          ];
-          preHook = ''
-            if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
-              unset DISPLAY
-            fi
-          '';
-        };
+        args = [
+          "run"
+          "--branch=stable"
+          "--arch=x86_64"
+          "--command=moe.launcher.sleepy-launcher"
+          "moe.launcher.sleepy-launcher"
+          "--just-run-game"
+        ];
+        preHook = ''
+          if [ -n "''${WAYLAND_DISPLAY:-}" ]; then
+            unset DISPLAY
+          fi
+        '';
         artwork = {
           icon = pkgs.fetchurl {
             url = "https://cdn2.steamgriddb.com/icon/048617ceb68b40a45847078db347ba59.png";

@@ -4,18 +4,6 @@
   pkgs,
   ...
 }: let
-  linux_7_1_5 = pkgs.linuxKernel.kernels.linux_7_1.override {
-    argsOverride = rec {
-      version = "7.1.5";
-      modDirVersion = version;
-
-      src = pkgs.fetchurl {
-        url = "https://www.kernel.org/pub/linux/kernel/v7.x/linux-${version}.tar.xz";
-        hash = "sha256-IqAZazy83zTcJ7d1YfTQQFhf00R+3JqzUxoax54wQec=";
-      };
-    };
-  };
-
   definedUsers = builtins.attrNames (
     lib.filterAttrs (_: user: user.isNormalUser or false) config.users.users
   );
