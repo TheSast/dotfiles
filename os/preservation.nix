@@ -1,4 +1,9 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     inputs.preservation.nixosModules.default
   ];
@@ -46,10 +51,23 @@
       enable = true;
       interval = "weekly";
     };
-    journald.extraConfig = ''
-      SystemMaxUse=1G
-      RuntimeMaxUse=200M
-    '';
+    journald = let
+      journalSettings =
+        if pkgs.lib.versionAtLeast config.system.nixos.release "26.11"
+        then {
+          settings.Journal = {
+            SystemMaxUse = "1G";
+            RuntimeMaxUse = "200M";
+          };
+        }
+        else {
+          extraConfig = ''
+            SystemMaxUse=1G
+            RuntimeMaxUse=200M
+          '';
+        };
+    in
+      journalSettings;
   };
   systemd = {
     coredump.settings.Coredump = {
