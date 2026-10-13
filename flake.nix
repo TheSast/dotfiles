@@ -119,7 +119,7 @@
                     }
                   }
                 ]
-              '';
+              ''; # ISSUE: audio is sometimes stuck at 0 until you re-enable and re-disable the hardware mixer
             }
           ]
           ++ [
