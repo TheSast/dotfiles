@@ -36,7 +36,6 @@ return {
                 locationLinks = { enable = true },
                 bindingModeHints = { enable = true },
                 closureCaptureHints = { enable = true },
-                closureReturnTypeHints = { alwyas = true },
                 discriminatingHints = { enable = true },
                 expressionAdjustmentHints = { always = true },
                 closureReturnTypeHints = { enable = "always" },
@@ -50,24 +49,17 @@ return {
   },
   {
     "Saecki/crates.nvim",
-    init = function()
-      vim.api.nvim_create_autocmd("BufRead", {
-        group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
-        desc = "Load crates.nvim into Cargo buffers",
-        pattern = "Cargo.toml",
-        callback = function()
-          require("cmp").setup.buffer { sources = { { name = "crates" } } }
-          require "crates"
-        end,
-      })
-    end,
+    event = { "BufRead Cargo.toml" },
     opts = {
       completion = {
-        cmp = { enabled = true },
+        crates = { enabled = true },
       },
-      null_ls = {
+      lsp = {
         enabled = true,
-        name = "crates.nvim",
+        on_attach = function(...) require("astrolsp").on_attach(...) end,
+        actions = true,
+        completion = true,
+        hover = true,
       },
     },
   },

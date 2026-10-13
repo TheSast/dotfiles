@@ -40,7 +40,9 @@ return {
     event = "User AstroFile",
     opts = {
       safe_labels = {},
-      case_sensitive = true,
+      vim_opts = {
+        ["go.ignorecase"] = false,
+      },
       keys = {
         next_target = ";", -- does not overrwite the mapping
         prev_target = ",", -- outside this "LEAP" mode
