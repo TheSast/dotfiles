@@ -105,6 +105,11 @@ debug {
     honor-xdg-activation-with-invalid-serial
 }
 
+
+window-rule {
+    open-floating false
+}
+
 window-rule {
     match app-id="at.yrlf.wl_mirror"
     open-fullscreen true
