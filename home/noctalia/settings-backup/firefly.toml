@@ -230,7 +230,6 @@ panel_placement = "attached"
 result_open_near_click = true
 result_placement = "attached"
 
-
 [plugin_settings."tadomika_ari/w-engine"]
 w-engine-panel_open_near_click = true
 w-engine-panel_placement = "attached"
@@ -282,7 +281,6 @@ show_location = false
 
     [shell.session]
     grid = true
-    grid_columns = 1
 
         [[shell.session.actions]]
         action = "lock"
@@ -304,13 +302,23 @@ show_location = false
         action = "suspend"
         countdown_seconds = 5.0
         enabled = true
-        shortcut = "4"
+        shortcut = "3"
         variant = "default"
 
         [[shell.session.actions]]
         action = "reboot"
         countdown_seconds = 5.0
         enabled = true
+        shortcut = "4"
+        variant = "default"
+
+        [[shell.session.actions]]
+        action = "command"
+        command = "systemctl start reboot-into-nt-mode.service"
+        countdown_seconds = 5.0
+        enabled = true
+        glyph = "brand-windows"
+        label = "NT Mode"
         shortcut = "5"
         variant = "default"
 

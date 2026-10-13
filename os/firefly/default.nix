@@ -42,6 +42,7 @@ in {
     ./disko.nix
     ../preservation.nix
     ./preservation.nix
+    ./dualboot.nix
   ];
 
   # system identity
