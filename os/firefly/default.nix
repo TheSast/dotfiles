@@ -47,7 +47,7 @@ in {
   # other
 
   boot = {
-    kernelPackages = pkgs.linuxPackagesFor linux_7_1_5;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "amdgpu.ppfeaturemask=0xfffd3fff"
       "split_lock_detect=off"
