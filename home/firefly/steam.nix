@@ -143,6 +143,43 @@
           };
         };
       };
+      "NT Mode" = {
+        target = pkgs.writeShellScriptBin "reboot-into-nt-mode" "systemctl start reboot-into-nt-mode.service";
+        startIn = config.home.homeDirectory;
+        artwork = let
+          artworkAndLogo =
+            pkgs.runCommand "nt-mode-artwork-and-logo.png"
+            {
+              nativeBuildInputs = [pkgs.imagemagick];
+              src = pkgs.fetchurl {
+                url = "https://cdn2.steamgriddb.com/icon/e3a6bc816749a1dae44ddacbb8de3999.png";
+                hash = "sha256-CjaNqH+mS/PwjpV+sjzTqwpEjZo/ReRyDUNiSk5Z6ww=";
+              };
+            }
+            ''
+              magick "$src" \
+                  -channel A -threshold 0 \
+                  -channel RGB -fill white -colorize 100 \
+                  -resize 720x720 \
+                  "$out"
+            '';
+        in {
+          icon = artworkAndLogo;
+          cover = pkgs.fetchurl {
+            url = "https://cdn2.steamgriddb.com/grid/5cac8a9dbef8b9a2b300976fcc421df5.jpg";
+            hash = "sha256-K35ixGsymc+iftfvYniHj1e5G2Pdp3rv+thxuXf9CJ4=";
+          };
+          header = pkgs.fetchurl {
+            url = "https://cdn2.steamgriddb.com/grid/fa42f9968f3cdfca47c5d87004dc062b.jpg";
+            hash = "sha256-STo1g998RlZvlssDktHhr03lfaU5Sbm+TsMX2RGlwtI=";
+          };
+          hero = pkgs.fetchurl {
+            url = "https://cdn2.steamgriddb.com/hero/0257bc9c0ee6c0bf66ecdc2fd91a5135.png";
+            hash = "sha256-zvXwcUj4CgnzgBtadN5a4SjFjXHxm93hcgRMeu4GSwY=";
+          };
+          logo = artworkAndLogo;
+        };
+      };
     };
   };
 }
