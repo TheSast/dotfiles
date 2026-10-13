@@ -31,66 +31,7 @@ set suspendtimeout=600000
 set vimcommand=neovide
 
 " Mappings
-unmap <F1>
-unmap <F2>
-unmap <F3>
-unmap <F4>
-unmap <F6>
-unmap <F7>
-unmap <F8>
-unmap <F9>
-unmap <F10>
-unmap <F11>
-unmap <F12>
-map <S-F5> <refreshTabWithoutCache>
-unmap <C-I>
-cmap <C-J> <nextSuggestionSection>
-cmap <C-j> <nextSuggestion>
-cmap <C-k> <prevSuggestion>
-cmap <C-K> <prevSuggestionSection>
-nmap ; <nop>
-nmap <C-Left> <decreaseWidthSplitWindow>
-nmap <C-Right> <increaseWidthSplitWindow>
-nmap <C-j> <toBottomSplitWindow>
-nmap <C-k> <toTopSplitWindow>
-nmap <C-l> <toRightSplitWindow>
-unmap <C-q>
-nmap <Esc> <:nohlsearch>
-nunmap F
-nmap S <startFollowNewTab>
-nunmap T
-nunmap ZZ
-nunmap b
-nunmap c
-nunmap d
-nunmap f
-nunmap r
-nmap s <startFollowCurrentTab>
-nunmap t
-nunmap w
-nunmap x
-nunmap yf
-nmap ys <startFollowCopyLink>
-nmap yv <p.copyText>
-nmap <lt>b <moveTabBackward>
-nmap >b <moveTabForward>
-nmap <C-h> <toLeftSplitWindow>
-nmap <C-Down> <decreaseHeightSplitWindow>
-nmap <C-Up> <increaseHeightSplitWindow>
-nmap <Space>fb <toCommandMode>b<Space>
-nmap <Space>ff <:tabnew><toExploreMode>
-nmap <Bar> <:vsplit>
-nmap <Space>q <:hide>
-nmap <Space>c <:close>
-nmap <Space>z <:set guifullscreennavbar!always|oninput><:set guifullscreentabbar!always|onupdate>
-nmap <Bslash> <:split>
-nmap <Space>bn <:tabnew>
-nmap ]b <nextTab>
-nmap [b <previousTab>
-" punmap b
-" punmap w
-" vunmap b
-" vunmap w
+source mappings.vieb
 
 " Commands
 command viewmarkdown <toggleMarkdownViewer>
