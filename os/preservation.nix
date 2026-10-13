@@ -18,6 +18,10 @@
       ];
       directories = [
         "/etc/NetworkManager/system-connections"
+        # TODO:
+        # manual certificate storage, maybe move to networking.networkmanager.ensureProfiles.profiles with agenix?
+        # otherwise create a nixos-nm-certs-tool to add/remove/update network certs (to this folder)
+        "/etc/NetworkManager/certs"
         "/etc/bluetooth"
         "/var/lib/AccountsService"
         "/var/lib/bluetooth"
