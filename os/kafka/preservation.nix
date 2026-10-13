@@ -13,6 +13,7 @@
         }
         "/var/lib/fprint"
         "/var/lib/fscrypt"
+        "/etc/mullvad-vpn"
         {
           directory = "/var/lib/sbctl";
           how = "symlink";
