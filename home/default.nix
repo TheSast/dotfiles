@@ -215,9 +215,6 @@ in {
       lazygit = {
         source = ./lazygit;
       };
-      neofetch = {
-        source = ./neofetch;
-      };
       npm = {
         source = ./npm;
       };
