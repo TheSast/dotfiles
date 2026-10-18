@@ -1,7 +1,4 @@
-{
-  config,
-  flakeRev,
-}:
+{inputs}:
 # json
 ''
   {
@@ -13,30 +10,46 @@
               "format": "\u001b[90m┌──────────────── Hardware Information"
           },
           {
+              "type": "title",
+              "key": "  {icon} ",
+              "format": "{host-name}",
+          },
+          {
               "type": "host",
-              "key": "  󰟀 ",
+              "key": "  {icon} ",
           },
           {
               "type": "cpu",
-              "key": "   ",
+              "key": "  {icon} ",
           },
           {
               "type": "gpu",
-              "key": "  󱄄 ",
+              "key": "  {icon} ",
+          },
+          {
+              "type": "physicalmemory",
+              "key": "  {icon} ",
+              "format": "{serial} or?"
           },
           {
               "type": "memory",
-              "key": "   ",
+              "key": "  {icon} ",
               "format": "{total}"
           },
           {
-              "type": "disk",
-              "key": "   ",
-              "format": "{size-total} {filesystem} {mount-from} -> {mountpoint}"
+              "type": "physicaldisk",
+              "hideVirtual": true,
+              "key": "  {icon} ",
+              "format": "{name} {size} {interconnect}"
           },
+          //{
+          //    "type": "disk",
+          //    "key": "   ",
+          //    "format": "{size-total} {filesystem} {mountpoint}"
+          //},
           {
               "type": "display",
-              "key": "  󰹑 ",
+              "key": "  {icon} ",
               "format": "{width}x{height}@{refresh-rate}Hz ({type})"
           },
           {
@@ -46,24 +59,40 @@
           {
               "type": "bios",
               "key": "   ",
+              //"key": "  {icon} ",
               "format": "{vendor} {version}"
           },
           {
+              "type": "bootmgr",
+              "key": "   ",
+              "format": "Secure-Boot {?secure-boot}ON {/secure-boot}OFF"
+          },
+          {
+              "type": "tpm",
+              "key": "   ",
+              "format": "{?version}TPM {version}{?}"
+          },
+          {
               "type": "kernel",
-              "key": "   ",
+              "key": "  {icon} ",
+          },
+          {
+              "type": "initsystem",
+              "key": "  {icon} ",
+              "format": "TPM {version}{/version}Absent"
           },
           {
               "type": "os",
-              "key": "   ",
+              "key": "  {icon} ",
           },
           {
               "type": "packages",
-              "key": "  󰏖 ",
+              "key": "  {icon} ",
           },
           {
               "type": "custom",
-              "Key": "   ",
-              "format": "${flakeRev}"
+              "key": "   ",
+              "format": "${inputs.self.rev or inputs.self.dirtyRev}"
           },
           {
               "type": "shell",
@@ -74,35 +103,49 @@
               "key": "   ",
           },
           {
+              "type": "lm",
+              "key": "  {icon} ",
+              "format": "{pretty-name} ({service})",
+          },
+          {
               "type": "de",
-              "key": "   ",
+              "key": "  {icon} ",
           },
           {
               "type": "wm",
-              "key": "   ",
+              "key": "  {icon} ",
           },
+          //{
+          //    "type": "vulkan",
+          //    "key": "  {icon} ",
+          //},
           {
               "type": "custom",
               "format": "\u001b[90m├──────────────── Appearance Information"
           },
-          // info "    " term_font
           {
-              "type": "command",
-              "Key": "  󰉼 ",
-              "text": "echo $(${config.xdg.configHome}/scripts/theme.sh)"
+              "type": "theme",
+              "key": "  {icon} ",
           },
           {
-              "type": "command",
-              "Key": "   ",
-              "text": "echo $(grep 'gtk-theme-name' ${config.xdg.configHome}/gtk-2.0/gtkrc | sed -e 's/.*gtk-theme-name = //' | sed -e 's/\"//g')/$(grep gtk-theme-name ${config.xdg.configHome}/gtk-3.0/settings.ini | sed -e s/gtk-theme-name=//)/$(grep gtk-theme-name ${config.xdg.configHome}/gtk-4.0/settings.ini | sed -e s/gtk-theme-name=//)"
+              "type": "icons",
+              "key": "  {icon} ",
           },
-          // {
-          //     "type": "custom",
-          //     "format": "\u001b[90m└────────────────────── Colors"
-          // },
+          {
+              "type": "font",
+              "key": "  {icon} ",
+          },
+          {
+              "type": "terminalfont",
+              "key": "  {icon} ",
+          },
+          {
+              "type": "custom",
+              "format": "\u001b[90m└───────────────────┐"
+          },
           {
               "type": "colors",
-              "paddingLeft": 22,
+              "paddingLeft": 20,
               "blockWidth": 100,
               "symbol": "circle"
           }
