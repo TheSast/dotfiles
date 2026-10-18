@@ -1,4 +1,4 @@
-config_version = 12
+config_version = 15
 
 [backdrop]
 enabled = true
@@ -6,8 +6,8 @@ tint_intensity = 0.0
 
 [bar.default]
 background_opacity = 0.89999997988343239
-center = [ "media", "group:g1", "widget_2" ]
-end = [ "notifications", "volume", "battery", "clock", "tray" ]
+center = [ "media" ]
+end = [ "privacy", "notifications", "volume", "battery", "clock", "tray" ]
 layer = "overlay"
 margin_ends = 0
 padding = 12
@@ -56,6 +56,9 @@ hidden_tabs = [
 sidebar = "none"
 sidebar_section = "none"
 width = 750
+
+    [control_center.calendar]
+    show_week_numbers = true
 
     [[control_center.shortcuts]]
     type = "wifi"
@@ -128,6 +131,8 @@ widget_order = [
     cx = 960.0
     cy = 961.0
     output = "DP-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "login_box"
 
@@ -153,6 +158,8 @@ widget_order = [
     cx = 800.0
     cy = 881.0
     output = "eDP-1"
+    placement_height = 1000.0
+    placement_width = 1600.0
     rotation = 0.0
     type = "login_box"
 
@@ -178,6 +185,8 @@ widget_order = [
     cx = 800.0
     cy = 500.0
     output = "eDP-1"
+    placement_height = 1000.0
+    placement_width = 1600.0
     rotation = 0.0
     type = "clock"
 
@@ -193,6 +202,8 @@ widget_order = [
     cx = 288.0
     cy = 500.0
     output = "eDP-1"
+    placement_height = 1000.0
+    placement_width = 1600.0
     rotation = 0.0
     type = "media_player"
 
@@ -206,6 +217,8 @@ widget_order = [
     cx = 384.0
     cy = 881.0
     output = "eDP-1"
+    placement_height = 1000.0
+    placement_width = 1600.0
     rotation = 0.0
     type = "yocraft/battery-widget:widget"
 
@@ -236,24 +249,12 @@ layer = "overlay"
 [osd]
 position = "bottom_center"
 
-[plugin_settings."alexander/screen-toolkit"]
-panel-full_open_near_click = true
-panel-full_placement = "attached"
-panel_open_near_click = true
-panel_placement = "attached"
-result_open_near_click = true
-result_placement = "attached"
-
 [plugin_settings."frai3mega/battery-graph"]
 battery-panel_open_near_click = true
 battery-panel_placement = "attached"
 
 [plugin_settings."whyoolw/sharednd"]
 only_active = true
-
-[plugin_settings."yocraft/qrcode"]
-panel_open_near_click = true
-panel_placement = "attached"
 
 [plugins]
 enabled = [ "elijaharch/wl-screen-mirror", "noctalia/kaomoji", "yocraft/battery-widget", "whyoolw/sharednd" ]
@@ -272,6 +273,9 @@ show_location = false
     [shell.launcher]
     app_grid = true
     fetch_exchange_rates = false
+    show_app_origin_indicator = false
+    show_session_button = false
+    show_settings_button = false
     sort_by_usage = false
 
         [shell.launcher.providers.calculator]
@@ -391,7 +395,7 @@ show_label = false
 right = "panel-toggle control-center screen-time"
 
 [widget.control-center]
-custom_image = "/home/u/.config/etc/home/noctalia/NixOS.svg"
+custom_image = "/home/u/.config/noctalia/NixOS.svg"
 custom_image_colorize = true
 scale = 1.4000000000000001
 
@@ -405,6 +409,9 @@ hide_when_no_media = true
 [widget.network]
 enabled = false
 
+[widget.privacy]
+hide_inactive = true
+
 [widget.tray]
 drawer = true
 drawer_item_size = 20.0
@@ -412,12 +419,6 @@ scale = 1.1500000000000001
 
 [widget.volume]
 show_label = false
-
-[widget.widget]
-type = "alexander/screen-toolkit:widget"
-
-[widget.widget_2]
-type = "yocraft/qrcode:widget"
 
 [widget.workspaces]
 focused_output_only = true

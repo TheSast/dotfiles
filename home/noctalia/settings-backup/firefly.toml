@@ -1,4 +1,4 @@
-config_version = 12
+config_version = 15
 
 [backdrop]
 enabled = true
@@ -6,8 +6,9 @@ tint_intensity = 0.0
 
 [bar.default]
 background_opacity = 0.89999997988343239
-center = [ "media", "group:g1", "widget_2" ]
-end = [ "notifications", "volume", "clock", "tray" ]
+center = [ "media" ]
+end = [ "privacy", "notifications", "volume", "clock", "tray" ]
+layer = "top"
 margin_ends = 0
 padding = 12
 position = "left"
@@ -104,8 +105,7 @@ widget_order = [
     "lockscreen-login-box@DP-1",
     "lockscreen-login-box@eDP-1",
     "lockscreen-widget-0000000000000001",
-    "lockscreen-widget-0000000000000002",
-    "lockscreen-widget-0000000000000003"
+    "lockscreen-widget-0000000000000002"
 ]
 
     [lockscreen_widgets.grid]
@@ -119,6 +119,8 @@ widget_order = [
     cx = 960.0
     cy = 961.0
     output = "DP-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "login_box"
 
@@ -142,8 +144,10 @@ widget_order = [
     box_height = 196.0
     box_width = 810.0
     cx = 1280.0
-    cy = 1258.0
+    cy = 1029.0
     output = "DP-3"
+    placement_height = 1029.0
+    placement_width = 1829.0
     rotation = 0.0
     type = "login_box"
 
@@ -169,6 +173,8 @@ widget_order = [
     cx = 800.0
     cy = 881.0
     output = "eDP-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "login_box"
 
@@ -194,6 +200,8 @@ widget_order = [
     cx = 800.0
     cy = 500.0
     output = "eDP-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "clock"
 
@@ -209,6 +217,8 @@ widget_order = [
     cx = 288.0
     cy = 500.0
     output = "eDP-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "media_player"
 
@@ -216,19 +226,14 @@ widget_order = [
         background = true
         hide_when_no_media = true
 
+[nightlight]
+enabled = false
+
 [notification]
 layer = "overlay"
 
 [osd]
 position = "bottom_center"
-
-[plugin_settings."alexander/screen-toolkit"]
-panel-full_open_near_click = true
-panel-full_placement = "attached"
-panel_open_near_click = true
-panel_placement = "attached"
-result_open_near_click = true
-result_placement = "attached"
 
 [plugin_settings."tadomika_ari/w-engine"]
 w-engine-panel_open_near_click = true
@@ -236,10 +241,6 @@ w-engine-panel_placement = "attached"
 
 [plugin_settings."whyoolw/sharednd"]
 only_active = true
-
-[plugin_settings."yocraft/qrcode"]
-panel_open_near_click = true
-panel_placement = "attached"
 
 [plugins]
 enabled = [ "noctalia/kaomoji", "whyoolw/sharednd", "tadomika_ari/w-engine" ]
@@ -258,6 +259,9 @@ show_location = false
     [shell.launcher]
     app_grid = true
     fetch_exchange_rates = false
+    show_app_origin_indicator = false
+    show_session_button = false
+    show_settings_button = false
     sort_by_usage = false
 
         [shell.launcher.providers.calculator]
@@ -347,6 +351,7 @@ enabled = false
 right = "panel-toggle control-center screen-time"
 
 [widget.control-center]
+custom_image = "/home/u/.config/noctalia/NixOS.svg"
 custom_image_colorize = true
 scale = 1.4000000000000001
 
@@ -360,6 +365,9 @@ hide_when_no_media = true
 [widget.network]
 enabled = false
 
+[widget.privacy]
+hide_inactive = true
+
 [widget.tray]
 drawer = true
 drawer_item_size = 20.0
@@ -367,12 +375,6 @@ scale = 1.1500000000000001
 
 [widget.volume]
 show_label = false
-
-[widget.widget]
-type = "alexander/screen-toolkit:widget"
-
-[widget.widget_2]
-type = "yocraft/qrcode:widget"
 
 [widget.workspaces]
 focused_output_only = true
