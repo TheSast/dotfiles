@@ -200,11 +200,9 @@ in {
       fastfetch = {
         target = "fastfetch/config.jsonc";
         text = import ./fastfetch.nix {
+          flakeRev = inputs.self.shortRev or inputs.self.dirtyShortRev;
           inherit
             config
-            pkgs
-            lib
-            flakeLoc
             ;
         };
       };

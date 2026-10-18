@@ -1,8 +1,6 @@
 {
   config,
-  pkgs,
-  lib,
-  flakeLoc,
+  flakeRev,
 }:
 # json
 ''
@@ -63,9 +61,9 @@
               "key": "  󰏖 ",
           },
           {
-              "type": "command",
+              "type": "custom",
               "Key": "   ",
-              "text": "echo $(${lib.getExe pkgs.git} --git-dir=${flakeLoc}/.git --work-tree=${flakeLoc} rev-parse HEAD)$(${lib.getExe pkgs.git} --git-dir=${flakeLoc}/.git --work-tree=${flakeLoc} diff-index --quiet HEAD -- || echo '-dirty')"
+              "format": "${flakeRev}"
           },
           {
               "type": "shell",
