@@ -1,5 +1,4 @@
 include "xdg.kdl"
-include optional=true "host.kdl"
 
 prefer-no-csd
 
@@ -141,3 +140,4 @@ window-rule {
     match app-id="electron" title=r#"^Allow this page to access '.*'\?$"#
     open-floating false
 }
+include optional=true "host.kdl"

@@ -3,19 +3,19 @@ binds {
     Mod+N { spawn "alacritty"; }
     Mod+F { spawn-sh "niri msg overview-state | grep -q open || tofi-drun | /bin/sh"; }
     Mod+Alt+F { spawn-sh "noctalia msg panel-toggle launcher"; }
-    Mod+Q { close-window; }
+    Mod+Q { close-window; } // LB + South
     Mod+V { spawn-sh "noctalia msg panel-toggle clipboard"; }
     Mod+Shift+V { spawn-sh "$XDG_CONFIG_HOME/scripts/editclip.sh"; }
     Mod+Shift+Z { maximize-column; }
     Mod+Z { fullscreen-window; }
     Mod+B { toggle-window-floating; }
-    Mod+Tab { toggle-overview; }
+    Mod+Tab { toggle-overview; } // LB + Select
     Mod+Space { spawn-sh "noctalia msg bar-toggle"; }
 
-    XF86AudioRaiseVolume allow-when-locked=true {
+    XF86AudioRaiseVolume allow-when-locked=true { // Mode + LS-Up
         spawn-sh "noctalia msg volume-up";
     }
-    XF86AudioLowerVolume allow-when-locked=true {
+    XF86AudioLowerVolume allow-when-locked=true { // Mode + LS-Down
         spawn-sh "noctalia msg volume-down";
     }
     XF86AudioMute allow-when-locked=true {
@@ -36,18 +36,18 @@ binds {
     XF86MonBrightnessDown allow-when-locked=true {
         spawn-sh "noctalia msg brightness-down";
     }
-    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
-    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
-    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; }
+    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media toggle"; } // Mode + LS
+    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; } // Mode + LS-Left
+    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; } // Mode + LS-Right
     XF86AudioStop allow-when-locked=true { spawn-sh "noctalia msg media stop"; }
     Mod+P { spawn-sh "noctalia msg panel-toggle elijaharch/wl-screen-mirror:controls"; }
     Print { screenshot; }
     XF86PowerOff { spawn-sh "noctalia msg panel-toggle session"; }
 
-    Mod+H { focus-column-or-monitor-left; }
-    Mod+J { focus-window-or-workspace-down; }
-    Mod+K { focus-window-or-workspace-up; }
-    Mod+L { focus-column-or-monitor-right; }
+    Mod+H { focus-column-or-monitor-left; } // LB + RS-Left
+    Mod+J { focus-window-or-workspace-down; } // LB + RS-Down
+    Mod+K { focus-window-or-workspace-up; } // LB + RS-Up
+    Mod+L { focus-column-or-monitor-right; } // LB + RS-Right
     Mod+Shift+H { move-column-left-or-to-monitor-left; }
     Mod+Shift+J { move-window-down-or-to-workspace-down; }
     Mod+Shift+K { move-window-up-or-to-workspace-up; }
@@ -56,6 +56,13 @@ binds {
     Mod+Control+L { consume-or-expel-window-right; }
     Mod+Backslash { consume-window-into-column; }
     Mod+Shift+Backslash { expel-window-from-column; }
+    Mod+WheelScrollDown cooldown-ms=100 { focus-window-or-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=100 { focus-window-or-workspace-up; }
+    Mod+Shift+WheelScrollDown cooldown-ms=100 { focus-column-or-monitor-left; }
+    Mod+Shift+WheelScrollUp cooldown-ms=100 { focus-column-or-monitor-right; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft { focus-column-left; }
+    Mod+MouseMiddle  { close-window; }
 
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
