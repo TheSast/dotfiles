@@ -22,6 +22,19 @@ window-rule {
     // match content-type="game"
     // variable-refresh-rate true
 }
+window-rule {
+    match app-id="steam" title="Steam Input On.screen Keyboard"
+    open-floating true
+    open-focused false
+    default-floating-position x=64 y=-125 relative-to="bottom-left" // x = padding, y = what felt best idk
+    min-width 1700 // logcial_width - padding * 2
+    opacity 0.75
+    background-effect {
+        blur false
+    }
+    block-out-from "screen-capture"
+    baba-is-float true
+}
 
 // steam startup / update window
 window-rule {
