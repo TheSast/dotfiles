@@ -77,20 +77,6 @@ return {
     opts = {},
   },
   {
-    "zen-mode.nvim",
-    dependencies = {
-      "astrocore",
-      ---@type AstroCoreOpts
-      opts = {
-        mappings = {
-          n = {
-            ["<Leader>z"] = { function() vim.cmd "ZenMode" end, desc = "Enter Zen Mode" },
-          },
-        },
-      },
-    },
-  },
-  {
     "luckasRanarison/nvim-devdocs",
     enabled = false,
     lazy = false,
@@ -113,38 +99,6 @@ return {
       picker_cmd_args = { "-w", "50" },
     },
   },
-  -- {
-  --   "obsidian-nvim/obsidian.nvim",
-  --   version = "4cd1789e0cf3e82e0eec1472df21069b647218ba",
-  --   ft = "markdown",
-  --   dependencies = { "plenary.nvim" },
-  --   init = function() vim.g.obsidian_nvim_save_textchanged = "InsertLeave" end,
-  --   opts = {
-  --     legacy_commands = false,
-  --     disable_frontmatter = true,
-  --     workspaces = {
-  --       {
-  --         name = "auto",
-  --         path = function()
-  --           return vim.fs.root(0, ".obsidian")
-  --         end,
-  --       },
-  --       {
-  --         name = "default",
-  --         path = "~/Desktop/",
-  --       },
-  --     },
-  --     callbacks = {
-  --       enter_note = obsidian_note_callback,
-  --       post_set_workspace = obsidian_note_callback,
-  --     },
-  --     picker = {
-  --       name = "snacks.pick",
-  --       note_mappings = {},
-  --       tag_mappings = {},
-  --     },
-  --   },
-  -- },
   {
     "epwalsh/obsidian.nvim",
     ft = "markdown",
