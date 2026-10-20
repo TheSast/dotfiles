@@ -3,15 +3,15 @@
     packages = (import ../lib.nix).forceExplicitFlatpakPackageUpdate [
       {
         appId = "moe.launcher.an-anime-game-launcher";
-        commit = "03d801761e7285dbdd06f2f79f3edfaf104a52ad0c4f482a6738a81065c9d45a";
+        commit = "2627d5a22de403e4a3499c8c6299dfffe63918e573b838dbd48f447f1de4072e";
       }
       {
         appId = "moe.launcher.the-honkers-railway-launcher";
-        commit = "924d9fdfe3c6a496a00071626859f9af771ec9c51d5e3c8f9fd3c08b5c47dd05";
+        commit = "87f6d208916a60c0f887e85d19d083c14ea1950053a01951304a8b844a822919";
       }
       {
         appId = "moe.launcher.sleepy-launcher";
-        commit = "102a95ce237776ed09ecacc5a0e43ce83461e7a676750ddc0425e16fc0cff4bc";
+        commit = "e1ab360fa230873a73726a890576f4f59a73e343e37dbf272d06b23a3e0d7e62";
       }
       {
         appId = "net.retrodeck.retrodeck";
