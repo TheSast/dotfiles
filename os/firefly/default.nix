@@ -49,6 +49,8 @@ in {
 
   # other
 
+  networking.mdns.autoAdvertise = true;
+
   # powerManagement.enable = true;
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
