@@ -376,6 +376,26 @@
         "type": "github"
       }
     },
+    "noctalia-unstable": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792458451,
+        "narHash": "sha256-iH2jFZ5xFROQbVUIOvUJyEmq+P8XbxPBwtiP6nRWtA4=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "dc3e8816ed224242411cf56b23fd928ca4447459",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
     "preservation": {
       "locked": {
         "lastModified": 1757436102,
@@ -428,6 +448,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",
+        "noctalia-unstable": "noctalia-unstable",
         "preservation": "preservation",
         "ragenix": "ragenix",
         "steam-config-nix": "steam-config-nix",
