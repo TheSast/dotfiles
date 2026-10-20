@@ -44,6 +44,10 @@
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-unstable = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     vieb = {
       url = "github:tejing1/vieb-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
