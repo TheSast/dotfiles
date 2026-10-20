@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -31,6 +32,8 @@ in {
     ../preservation.nix
     ./preservation.nix
     ./dualboot.nix
+    inputs.hardware.nixosModules.common-cpu-amd-pstate
+    inputs.hardware.nixosModules.common-gpu-amd
   ];
 
   # system identity
@@ -46,12 +49,17 @@ in {
 
   # other
 
+  # powerManagement.enable = true;
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "amdgpu.ppfeaturemask=0xfffd3fff"
       "split_lock_detect=off"
-      "amd_pstate=active"
+      # "amd_pstate=active"
+      # "amd_pstate=guided"
+      "pcie_aspm.policy=performance"
+      # "amdgpu.runpm=0"
+      # "amdgpu.aspm=0"
     ];
     initrd.kernelModules = ["amdgpu"];
     kernelModules = [
@@ -62,8 +70,9 @@ in {
     ];
   };
   hardware = {
-    graphics.enable = true;
+    # graphics.enable = true; # in nixos-hardware
     # nvidia.open = false;
+    enableRedistributableFirmware = true; # in nixos-hardware
   };
   services.xserver.videoDrivers = [
     # "nvidia"
@@ -106,7 +115,10 @@ in {
       desktopSession = "niri";
       user = onlyUser;
     };
-    decky-loader.enable = true;
+    decky-loader = {
+      enable = true;
+      # extraPackages = [pkgs.pnpm_10];
+    };
     devices.steamdeck.enableControllerUdevRules = true;
     hardware.has.amd.gpu = true;
   };
