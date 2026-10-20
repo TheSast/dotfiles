@@ -7,6 +7,7 @@
   imports = [
     ./secrets.nix
     ./dm.nix
+    ./mdns.nix
   ];
 
   boot = {
@@ -190,8 +191,7 @@
     };
   };
 
-  # dam
-  services.resolved.enable = true;
+  networking.mdns.enable = true;
 
   system.tools = {
     nixos-enter.enable = false;
