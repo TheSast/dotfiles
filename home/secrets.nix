@@ -1,10 +1,10 @@
 {
   config,
-  inputs,
+  modules,
   ...
 }: {
   imports = [
-    inputs.agenix.homeManagerModules.default
+    modules.agenix
   ];
   age = {
     identityPaths = ["${config.xdg.configHome}/age/home_age_key"];

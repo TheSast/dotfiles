@@ -1,0 +1,19 @@
+{
+  imports = [
+    ./audio.nix
+    ./bootloader.nix
+    ./frugal.nix
+    ./fscrypt.nix
+    ./identity.nix
+    ./locale.nix
+    ./login-manager.nix
+    ./mdns.nix
+    ./network.nix
+    ./nix.nix
+    ./prettyboot.nix
+    ./secrets.nix
+    ./security.nix
+    ./tty.nix
+    ./user.nix
+  ];
+}
