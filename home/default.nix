@@ -1,8 +1,9 @@
 {
   config,
-  pkgs,
+  pkgs-extra,
+  flake,
   lib,
-  inputs,
+  pkgs,
   ...
 }: let
   flakeLoc = "${config.xdg.configHome}/etc";
@@ -121,7 +122,7 @@ in {
     nh
     ouch
     ripgrep
-    inputs.ragenix.packages."${pkgs.stdenv.hostPlatform.system}".default
+    pkgs-extra.ragenix
     swayimg
     tabiew
     tmux
@@ -201,7 +202,7 @@ in {
         target = "fastfetch/config.jsonc";
         text = import ./fastfetch.nix {
           inherit
-            inputs
+            flake
             ;
         };
       };

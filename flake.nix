@@ -1,4 +1,84 @@
 {
+  outputs = inputs: let
+    lib = import ./lib.nix;
+    forAllSys = lib.forAllSys inputs;
+  in {
+    nixosConfigurations = lib.mkNixOsConfigs inputs {
+      default = {
+        inherit (inputs) nixpkgs;
+        modules = system: {
+          agenix = inputs.agenix.nixosModules.default;
+          disko =
+            (lib.applyPatches {
+              lib = inputs.nixpkgs.lib;
+              inherit (inputs) call-flake;
+              pkgs = inputs.nixpkgs.legacyPackages."${system}";
+              name = "disko-withTPM2";
+              src = inputs.disko;
+              patches = [./patches/disko/tpm2.patch];
+            }).nixosModules.disko;
+          nixos-hardware = inputs.hardware.nixosModules;
+          preservation = inputs.preservation.nixosModules.default;
+        };
+      };
+      kafka = {
+        system = "x86_64-linux";
+      };
+      firefly = {
+        nixpkgs = inputs.nixpkgs-unstable;
+        system = "x86_64-linux";
+        modules = {
+          jovian = inputs.jovian.nixosModules.default;
+        };
+      };
+    };
+
+    homeConfigurations = lib.mkHomeManagerConfigs inputs {
+      default = {
+        inherit (inputs) home-manager;
+        modules = {
+          nix-flatpak = inputs.nix-flatpak.homeManagerModules.nix-flatpak;
+          agenix = inputs.agenix.homeManagerModules.default;
+        };
+        extra-packages = system: {
+          vieb = inputs.vieb.packages."${system}".default;
+          noctalia = inputs.noctalia.packages."${system}".default;
+          ragenix = inputs.ragenix.packages."${system}".default;
+        };
+      };
+      "u@kafka" = {
+        system = "x86_64-linux";
+      };
+      "u@firefly" = {
+        home-manager = inputs.home-manager-unstable;
+        system = "x86_64-linux";
+        modules = {
+          steam-config-nix = inputs.steam-config-nix.homeModules.default;
+        };
+        extra-packages = system: {
+          noctalia = inputs.noctalia-unstable.packages."${system}".default;
+        };
+      };
+    };
+
+    formatter = forAllSys (pkgs: pkgs.alejandra);
+    devShells = forAllSys (pkgs: {
+      shell =
+        pkgs.mkShell.override
+        {
+          stdenv = pkgs.stdenvNoCC;
+        }
+        {
+          packages = with pkgs; [
+            shellcheck
+            bash-language-server
+            shellharden
+            shfmt
+          ];
+        };
+    });
+  };
+
   inputs = {
     # nix
     agenix = {
@@ -57,126 +137,5 @@
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
-
-  outputs = inputs: let
-    stdenv.hostPlatform.system = "x86_64-linux";
-    pkgs = inputs.nixpkgs.legacyPackages."${stdenv.hostPlatform.system}";
-    pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages."${stdenv.hostPlatform.system}";
-
-    lib = import ./lib.nix {
-      lib = inputs.nixpkgs.lib;
-      inherit (inputs) call-flake;
-      inherit pkgs;
-    };
-
-    pkgsForAllSystems = f:
-      inputs.nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ] (sys: f inputs.nixpkgs.legacyPackages.${sys});
-
-    disko-withTPM2 = lib.applyPatches {
-      name = "disko-withTPM2";
-      src = inputs.disko;
-      patches = [./patches/disko/tpm2.patch];
-    };
-  in {
-    nixosConfigurations = {
-      kafka = inputs.nixpkgs.lib.nixosSystem {
-        modules =
-          [
-            inputs.hardware.nixosModules.framework-16-amd-ai-300-series
-            {
-              # INFO: https://github.com/NixOS/nixos-hardware/issues/1743
-
-              # services.pipewire.wireplumber.extraConfig."alsa-framework-16-soft-mixer" = {
-              #   "monitor.alsa.rules" = [
-              #     {
-              #       matches = [
-              #         {
-              #           "device.name" = "alsa_card.pci-0000_c1_00.6";
-              #         }
-              #       ];
-              #       actions = {
-              #         update-props = {
-              #           "api.alsa.soft-mixer" = true;
-              #         };
-              #       };
-              #     }
-              #   ];
-              # };
-              environment.etc."wireplumber/wireplumber.conf.d/alsa-framework-16-soft-mixer.conf".text = ''
-                monitor.alsa.rules = [
-                  {
-                    matches = [
-                      {
-                        device.name = "alsa_card.pci-0000_c1_00.6"
-                      }
-                    ]
-                    actions = {
-                      update-props = {
-                        api.alsa.soft-mixer = true
-                      }
-                    }
-                  }
-                ]
-              ''; # ISSUE: audio is sometimes stuck at 0 until you re-enable and re-disable the hardware mixer
-            }
-          ]
-          ++ [
-            disko-withTPM2.nixosModules.disko
-            ./os
-            ./os/kafka
-          ];
-        specialArgs = {inherit inputs;};
-      };
-      firefly = inputs.nixpkgs-unstable.lib.nixosSystem {
-        modules = [
-          disko-withTPM2.nixosModules.disko
-          inputs.jovian.nixosModules.default
-          ./os
-          ./os/firefly
-        ];
-        specialArgs = {inherit inputs;};
-      };
-    };
-
-    homeConfigurations = {
-      "u@kafka" = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home
-          ./home/kafka
-        ];
-        extraSpecialArgs = {inherit inputs pkgs-unstable;};
-      };
-      "u@firefly" = inputs.home-manager-unstable.lib.homeManagerConfiguration {
-        pkgs = pkgs-unstable;
-        modules = [
-          ./home
-          ./home/firefly
-        ];
-        extraSpecialArgs = {inherit inputs pkgs-unstable;};
-      };
-    };
-    formatter."${stdenv.hostPlatform.system}" = pkgs.alejandra;
-    devShells = pkgsForAllSystems (pkgs: {
-      shell =
-        pkgs.mkShell.override
-        {
-          stdenv = pkgs.stdenvNoCC;
-        }
-        {
-          packages = with pkgs; [
-            shellcheck
-            bash-language-server
-            shellharden
-            shfmt
-          ];
-        };
-    });
   };
 }

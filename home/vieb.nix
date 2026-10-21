@@ -1,6 +1,6 @@
 {
   pkgs,
-  inputs,
+  pkgs-extra,
   config,
   ...
 }: {
@@ -12,7 +12,7 @@
         # dconf/gsettings colorscheme changes
         name = "vieb-wrapped";
         paths = [
-          inputs.vieb.packages."${pkgs.stdenv.hostPlatform.system}".default
+          pkgs-extra.vieb
         ];
         nativeBuildInputs = [pkgs.makeWrapper];
         postBuild = ''

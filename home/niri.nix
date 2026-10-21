@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  inputs,
+  pkgs-extra,
   ...
 }: let
   flakeLoc = "${config.xdg.configHome}/etc";
@@ -9,19 +9,14 @@
   gsettings-schemas = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.pname}-${pkgs.gsettings-desktop-schemas.version}";
 in {
   services.gnome-keyring.enable = true;
-  home.packages = with pkgs; let
-    noctalia =
-      if pkgs.lib.versionAtLeast pkgs.lib.trivial.release "26.11"
-      then inputs.noctalia-unstable
-      else inputs.noctalia;
-  in [
+  home.packages = with pkgs; [
     playerctl
     tofi
     udiskie
     glib
     libnotify
     niri
-    noctalia.packages."${pkgs.stdenv.hostPlatform.system}".default
+    pkgs-extra.noctalia
     wl-mirror
   ];
   gtk = {

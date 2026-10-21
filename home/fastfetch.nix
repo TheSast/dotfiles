@@ -1,4 +1,4 @@
-{inputs}:
+{flake}:
 # json
 ''
   {
@@ -92,7 +92,7 @@
           {
               "type": "custom",
               "key": "   ",
-              "format": "${inputs.self.rev or inputs.self.dirtyRev}"
+              "format": "${flake.rev or flake.dirtyRev}"
           },
           {
               "type": "shell",

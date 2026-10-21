@@ -1,11 +1,11 @@
 {
-  inputs,
+  modules,
   pkgs-unstable,
   lib,
   ...
 }: {
   imports = [
-    inputs.nix-flatpak.homeManagerModules.nix-flatpak
+    modules.nix-flatpak
   ];
   home.packages = [
     pkgs-unstable.flatpak
