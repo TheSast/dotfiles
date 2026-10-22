@@ -10,6 +10,9 @@
   home.packages = [
     pkgs-unstable.flatpak
   ];
+  home.shellAliases = {
+    bw = "flatpak run --command=bw com.bitwarden.desktop";
+  };
   services = {
     flatpak = {
       enable = true;
