@@ -90,7 +90,10 @@ return {
             function() require("astrocore.buffer").nav(-vim.v.count1) end,
             desc = "Previous buffer",
           },
-          ["<C-Q>"] = "<NOP>",
+          ["<C-Q>"] = {
+            function() vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace "nvim.multicursor", 0, -1) end,
+            desc = "Clear all extra cursors",
+          },
           ["<C-r>"] = "<NOP>",
           ["<C-S>"] = false,
           ["<C-W>d"] = false,
@@ -174,7 +177,6 @@ return {
           ["s"] = "<NOP>",
           ["QQ"] = "<NOP>",
           ["Q@"] = "<NOP>",
-          ["@"] = "<NOP>",
           -- operator-doubled
           ["yy"] = "<NOP>",
           ["cc"] = "<NOP>",
@@ -230,34 +232,6 @@ return {
           ["s"] = "<NOP>",
           ["q:"] = "<NOP>",
           ["g:"] = { "q:", desc = "Command window" },
-          ["Q"] = "<NOP>",
-          -- ["Q"] = {
-          --   function()
-          --     vim.cmd.normal {
-          --       "q"
-          --         .. (
-          --           vim.fn.reg_recording() ~= "" and ""
-          --           or (vim.v.register == "+" or vim.v.register == '"' or vim.v.register == "*") and "q"
-          --           or vim.v.register
-          --         ),
-          --       bang = true,
-          --     }
-          --   end,
-          --   desc = "Record macro",
-          -- },
-          -- ["q"] = {
-          --   function()
-          --     vim.cmd.normal {
-          --       "@"
-          --         .. (
-          --           (vim.v.register == "+" or vim.v.register == '"' or vim.v.register == "*") and "q"
-          --           or vim.v.register
-          --         ),
-          --       bang = true,
-          --     }
-          --   end,
-          --   desc = "Play macro",
-          -- },
           ["QQ"] = "<NOP>",
           ["Q@"] = "<NOP>",
           -- ["@"] = "<NOP>",
@@ -430,7 +404,7 @@ return {
           { "I", desc = "Insert at start of text line" },
           -- { "L", desc = "Lowest line of the window" }, --
           -- { "M", desc = "Middle line of the window" }, --
-          -- { "Q", desc = "Play last macro" }, --
+          { "Q", desc = "Spawn extra cursor" },
           -- { "Z", desc = "ZE UNGKNOUN" }, --
           -- { "g", desc = "Girthy" }, --
           { "g&", desc = "Repeat substitute on all lines" },
