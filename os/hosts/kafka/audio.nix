@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   services.pipewire.pulse.enable = false;
 
   # INFO: https://github.com/NixOS/nixos-hardware/issues/1743
@@ -34,4 +34,17 @@
       }
     ]
   ''; # ISSUE: audio is sometimes stuck at 0 until you re-enable and re-disable the hardware mixer
+
+  systemd.services.set-audio-volume = {
+    description = "Unmute and set ALSA Master volume";
+    wantedBy = ["multi-user.target"];
+    after = ["sound.target"];
+
+    path = [pkgs.alsa-utils];
+
+    serviceConfig.Type = "oneshot";
+    script = ''
+      amixer -c 1 sset Master 100% unmute
+    '';
+  };
 }
