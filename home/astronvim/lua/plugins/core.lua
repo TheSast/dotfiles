@@ -71,10 +71,11 @@ return {
   },
   {
     "better-escape.nvim",
-    opts = {
-      timeout = 150,
-      mappings = { i = { j = { k = "<Esc>" }, k = { j = "<Esc>" } } },
-    },
+    opts = function(_, opts)
+      opts.timeout = 150
+      opts.mappings = { i = { j = { k = "<Esc>" }, k = { j = "<Esc>" } } }
+      return opts
+    end,
   },
   {
     "heirline.nvim",
