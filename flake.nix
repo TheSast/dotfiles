@@ -1,16 +1,16 @@
 {
   outputs = inputs: let
-    lib = import ./lib.nix;
-    forAllSys = lib.forAllSys inputs;
+    inherit (import ./lib.nix) applyPatches mkNixOsConfigs mkHomeManagerConfigs;
+    forAllSys = (import ./lib.nix).forAllSys inputs;
   in {
-    nixosConfigurations = lib.mkNixOsConfigs inputs {
+    nixosConfigurations = mkNixOsConfigs inputs {
       default = {
         inherit (inputs) nixpkgs;
         modules = system: {
           agenix = inputs.agenix.nixosModules.default;
           disko =
-            (lib.applyPatches {
-              lib = inputs.nixpkgs.lib;
+            (applyPatches {
+              inherit (inputs.nixpkgs) lib;
               inherit (inputs) call-flake;
               pkgs = inputs.nixpkgs.legacyPackages."${system}";
               name = "disko-withTPM2";
@@ -33,7 +33,7 @@
       };
     };
 
-    homeConfigurations = lib.mkHomeManagerConfigs inputs {
+    homeConfigurations = mkHomeManagerConfigs inputs {
       default = {
         inherit (inputs) home-manager;
         modules = {
