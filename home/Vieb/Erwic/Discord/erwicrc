@@ -1,4 +1,5 @@
 source ../shared.vieb
+set useragentsys=windows
 set nativenotification=smallonly
 set permissionsallowed+=discord.com~microphone~mediadevicesfull~notifications~camera
 set permissionsasked+=discord.com~displaycapture
