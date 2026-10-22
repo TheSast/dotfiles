@@ -118,6 +118,10 @@ in {
             input_path = '${config.xdg.configHome}/noctalia/templates/tty'
             output_path = '${config.xdg.cacheHome}/noctalia-templates/tty'
 
+            [theme.templates.user.fish]
+            input_path = '${config.xdg.configHome}/noctalia/templates/fish'
+            output_path = '${config.xdg.cacheHome}/noctalia-templates/fish'
+
             [theme.templates.user.tofi]
             input_path = '${config.xdg.configHome}/noctalia/templates/tofi'
             output_path = '${config.xdg.cacheHome}/noctalia-templates/tofi'
