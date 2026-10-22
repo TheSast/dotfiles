@@ -30,7 +30,8 @@ return {
   },
   {
     url = "https://codeberg.org/andyg/leap.nvim",
-    event = "User AstroFile",
+    event = vim.g.obsidian and nil or "User AstroFile",
+    lazy = (not vim.g.obsidian) and nil,
     opts = {
       safe_labels = {},
       vim_opts = {

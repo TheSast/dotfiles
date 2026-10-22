@@ -13,7 +13,7 @@ require("lazy").setup {
   },
   change_detection = { notify = false },
   defaults = { lazy = true, version = "*" },
-  install = { colorscheme = { "astrotheme", "habamax" } },
+  install = { colorscheme = { vim.g.obsidian and nil or "astrotheme", "habamax" } },
   ui = { backdrop = 100 },
   performance = {
     rtp = {

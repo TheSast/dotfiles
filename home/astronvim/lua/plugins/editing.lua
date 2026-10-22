@@ -102,6 +102,7 @@ return {
   {
     "epwalsh/obsidian.nvim",
     ft = "markdown",
+    opt = not vim.g.obsidian,
     dependencies = { "plenary.nvim", "nvim-telescope/telescope.nvim" },
     init = function() vim.g.obsidian_note_autosave = "InsertLeave" end,
     opts = {
