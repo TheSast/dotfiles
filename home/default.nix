@@ -78,38 +78,9 @@ in {
     inlyne
     lazygit
     neovide
-    (pkgs.writeShellApplication {
-      name = "nvim";
-      runtimeInputs = with pkgs;
-        [pkgs.neovim-unwrapped]
-        ++ [
-          # lsp
-          alejandra
-          deadnix
-          lua-language-server
-          luajitPackages.luacheck
-          selene
-          tinymist
-          nil
-          statix
-          stylua
-        ]
-        ++ [
-          # plugin deps
-          gcc # nvim-treesitter
-          git # lazy.nvim
-          gnumake # jsregexp for LuaSnip
-          ripgrep # telescope-fzf-native.nvim # snacks.nvim
-          curl # blink.cmp
-          fd # snacks.nvim
-          tree-sitter # nvim-treeesitter
-          # xdg-utils?
-          # wl-clipboard?
-        ];
-      text = ''
-        export LUA_CPATH="${pkgs.luajitPackages.luautf8}/lib/lua/5.1/?.so;''${LUA_CPATH:-;;}"
-        exec nvim "$@"
-      '';
+    (import ./nvim.nix {
+      inherit pkgs;
+      isolated = false;
     })
     networkmanagerapplet
     (lib.hiPrio (

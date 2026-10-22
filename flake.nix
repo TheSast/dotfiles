@@ -61,6 +61,12 @@
       };
     };
 
+    packages = forAllSys (pkgs: {
+      nvim = import ./home/nvim.nix {
+        inherit pkgs;
+        isolated = true;
+      };
+    });
     formatter = forAllSys (pkgs: pkgs.alejandra);
     devShells = forAllSys (pkgs: {
       shell =

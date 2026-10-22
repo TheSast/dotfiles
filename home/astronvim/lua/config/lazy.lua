@@ -17,6 +17,7 @@ require("lazy").setup {
   ui = { backdrop = 100 },
   performance = {
     rtp = {
+      paths = vim.g.config_dir and { vim.g.config_dir } or {},
       disabled_plugins = {
         "gzip",
         "matchit", -- see `:h cpo-%`
