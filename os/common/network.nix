@@ -1,4 +1,9 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
+  systemd.network.wait-online.enable = !config.networking.networkmanager.enable;
   networking = {
     mdns.enable = true;
     networkmanager = {
