@@ -70,7 +70,7 @@
           {
               "type": "tpm",
               "key": "   ",
-              "format": "{?version}TPM {version}{?}"
+              "format": "TPM {version}{/version}Absent"
           },
           {
               "type": "kernel",
@@ -79,7 +79,6 @@
           {
               "type": "initsystem",
               "key": "  {icon} ",
-              "format": "TPM {version}{/version}Absent"
           },
           {
               "type": "os",
@@ -105,7 +104,8 @@
           {
               "type": "lm",
               "key": "  {icon} ",
-              "format": "{pretty-name} ({service})",
+              "format": "{name} ({service})",
+              // "format": "{pretty-name} ({service})",
           },
           {
               "type": "de",
