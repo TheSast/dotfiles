@@ -30,6 +30,7 @@
         # otherwise create a nixos-nm-certs-tool to add/remove/update network certs (to this folder)
         "/etc/NetworkManager/certs"
         "/etc/bluetooth"
+        "/etc/secureboot"
         "/var/lib/AccountsService"
         "/var/lib/bluetooth"
         "/var/lib/disko"
@@ -41,6 +42,11 @@
           inInitrd = true; # probably unnecessary?
         }
         "/var/lib/NetworkManager"
+        {
+          directory = "/var/lib/sbctl";
+          how = "symlink";
+          createLinkTarget = false;
+        }
         "/var/lib/systemd/backlight"
         "/var/lib/systemd/coredump"
         "/var/lib/systemd/rfkill"

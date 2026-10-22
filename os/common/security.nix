@@ -22,5 +22,13 @@
       newgpr.enable = false;
       chsh.enable = config.users.mutableUsers;
     };
+    tpm2.enable = true;
+  };
+  boot.loader.limine = {
+    enable = true;
+    secureBoot = {
+      autoEnrollKeys.enable = true;
+      enable = true;
+    };
   };
 }
