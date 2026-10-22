@@ -140,8 +140,8 @@ in {
       enable = true;
     };
     systemDirs = {
-      config = ["\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/etc/xdg"];
-      data = ["\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share"];
+      config = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/etc/xdg" ];
+      data = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/share" ];
     };
     userDirs = {
       enable = true;
