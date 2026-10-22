@@ -77,8 +77,11 @@ in {
     git
     glow
     inlyne
+    jjui
+    jujutsu
     less
     lazygit
+    lazyjj
     neovide
     (import ./nvim.nix {
       inherit pkgs;
@@ -205,6 +208,9 @@ in {
       hyfetch = {
         target = "hyfetch.json";
         source = ./hyfetch.json;
+      };
+      jj = {
+        source = symlinkDirectly "jj";
       };
       lazygit = {
         source = ./lazygit;

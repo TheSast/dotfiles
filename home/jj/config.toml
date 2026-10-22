@@ -1,0 +1,9 @@
+[aliases]
+ui = ["util", "exec", "--", "lazyjj"]
+
+[ui]
+default-command = ["help"]
+
+[signing]
+behavior = "own"
+backend = "ssh"

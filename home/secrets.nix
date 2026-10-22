@@ -37,6 +37,18 @@
         file = ./git/identities/gl-ren.age;
         path = "$XDG_CONFIG_HOME/git/identities/gl-ren";
       };
+      "jj/conf.d/gh-joker" = {
+        file = ./jj/conf.d/gh-joker.toml.age;
+        path = "$XDG_CONFIG_HOME/jj/conf.d/gh-joker.toml";
+      };
+      "jj/conf.d/gh-ren" = {
+        file = ./jj/conf.d/gh-ren.toml.age;
+        path = "$XDG_CONFIG_HOME/jj/conf.d/gh-ren.toml";
+      };
+      "jj/conf.d/gl-ren" = {
+        file = ./jj/conf.d/gl-ren.toml.age;
+        path = "$XDG_CONFIG_HOME/jj/conf.d/gl-ren.toml";
+      };
     };
   };
 }
