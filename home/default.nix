@@ -15,6 +15,7 @@ in {
     ./vieb.nix
     ./fish.nix
     ./flatpak.nix
+    ./frugal.nix
     ./modules
   ];
   home = {
@@ -76,6 +77,7 @@ in {
     git
     glow
     inlyne
+    less
     lazygit
     neovide
     (import ./nvim.nix {
@@ -90,7 +92,20 @@ in {
         echo "Hidden=1" >> "$out/share/applications/nm-connection-editor.desktop"
       ''
     ))
-    nh
+    (pkgs.symlinkJoin {
+      name = "nh-with-env";
+      paths = [ pkgs.nh ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram "$out/bin/nh" \
+          --prefix PATH : ${
+            pkgs.runCommand "coreutils-env-only" { } ''
+              mkdir -p "$out/bin"
+              ln -s "${pkgs.coreutils}/bin/env" "$out/bin/env"
+            ''
+          }/bin
+      '';
+    })
     ouch
     ripgrep
     pkgs-extra.ragenix
@@ -109,6 +124,13 @@ in {
     xdg-utils
     zellij
     zoxide
+    (pkgs.runCommand "picky-coreutils" { } ''
+      # ISSUE: fixme
+      mkdir -p "$out/bin"
+      mkdir -p "$out/share/man/man1"
+      ln -s "${pkgs.coreutils}/bin/cat" "$out/bin/cat" # fixes nvim?
+      ln -s "${pkgs.coreutils}/share/man/man1/cat.1.gz" "$out/share/man/man1/cat.1.gz"
+    '')
   ];
 
   home.preferXdgDirectories = true;
@@ -209,15 +231,6 @@ in {
         source = ./tmux-powerline;
       };
     };
-    # list executables via `ls -1  $XDG_STATE_DIR/nix/profile/bin/ | sed -E 's%.*-> .{43}-%%g' | sort`
-    dataFile = {
-      "current-user-packages".text = let
-        packages = builtins.map (p: "${p.name}") config.home.packages;
-        sortedUnique = builtins.sort builtins.lessThan (lib.unique packages);
-        formatted = builtins.concatStringsSep "\n" sortedUnique;
-      in
-        formatted;
-    };
   };
 
   home.file = {
@@ -225,11 +238,7 @@ in {
       source = ./bash/login.bash;
     };
     ".bashrc" = {
-      text =
-        ''
-          eval "$(${lib.getExe pkgs.starship} init bash)"
-        ''
-        + (builtins.readFile ./bash/nonlogin.bash);
+      text = import ./bash/nonlogin.nix { inherit pkgs; };
     };
     ".ssh/config" = {
       source = ./ssh/config;
@@ -275,10 +284,6 @@ in {
     LIBEXEC_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/libexec\${LIBEXEC_PATH:+:$LIBEXEC_PATH}";
   };
 
-  home.shellAliases = {
-    mv = "mv -i";
-    eza = "${lib.getExe pkgs.eza} --icons auto --git";
-  };
 
   services.syncthing = {
     enable = true;

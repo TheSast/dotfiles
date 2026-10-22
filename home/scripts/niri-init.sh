@@ -3,7 +3,8 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
-# runtimeInputs = [coreutils systemd noctalia udiskie kanshi kdeconnectd steam]
+. "$XDG_CONFIG_HOME/script.path"
+# runtimeInputs = [coreutils systemd noctalia udiskie hostname kanshi kdeconnectd steam]
 # ++ ./corn.sh.runtimeInputs;
 
 run() {

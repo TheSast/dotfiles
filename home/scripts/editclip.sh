@@ -2,6 +2,7 @@
 set -o errexit
 set -o nounset
 
+. "$XDG_CONFIG_HOME/script.path"
 # runtimeInputs = [coreutils xdg-utils wl-clipboard];
 
 PROGNAME="${0##*/}"

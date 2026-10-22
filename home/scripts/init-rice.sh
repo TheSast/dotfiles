@@ -3,6 +3,7 @@ set -o errexit
 set -o nounset
 
 # expects proper XDG base dirs variables to be set up
+. "$XDG_CONFIG_HOME/script.path"
 # runtimeInputs = [coreutils noctalia]
 # ++ ./log.sh.runtimeInputs
 # ++ ./theme.sh.runtimeInputs;

@@ -10,11 +10,9 @@
 in {
   services.gnome-keyring.enable = true;
   home.packages = with pkgs; [
-    playerctl
+    # playerctl # superseded by noctalia?
     tofi
-    udiskie
-    glib
-    libnotify
+    # glib # only needed in scripts?
     niri
     pkgs-extra.noctalia
     wl-mirror

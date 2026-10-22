@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # expects proper XDG base dirs variables to be set up
+. "$XDG_CONFIG_HOME/script.path"
 # runtimeInputs = [coreutils gnugrep /* linux utils? */ ]
 
 USAGE="Usage: ${0##*/}"

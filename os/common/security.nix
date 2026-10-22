@@ -1,4 +1,4 @@
-{config, ...}: {
+{
   security = {
     polkit = {
       enable = true;
@@ -20,7 +20,6 @@
       # fusermount3.enable = false; # may break appimages?
       pkexec3.enable = false;
       newgpr.enable = false;
-      chsh.enable = config.users.mutableUsers;
     };
     tpm2.enable = true;
   };

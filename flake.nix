@@ -66,6 +66,9 @@
         inherit pkgs;
         isolated = true;
       };
+      fish = import ./home/fin.nix {
+        inherit pkgs;
+      };
     });
     formatter = forAllSys (pkgs: pkgs.alejandra);
     devShells = forAllSys (pkgs: {

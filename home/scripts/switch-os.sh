@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # expects proper XDG base dirs variables to be set up
+. "$XDG_CONFIG_HOME/script.path"
 # runtimeInputs = [coreutils gnugrep efibootmgr /* linux utils? */ ] ++ ./hibernate-reboot.sh.runtimeInputs
 
 USAGE="Usage: ${0##*/} <OS>"

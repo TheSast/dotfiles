@@ -132,4 +132,23 @@ in {
         };
       }
   ) (builtins.removeAttrs cfg ["default"]));
+  copyBinary =
+    pkg: binName:
+    # sh
+    ''
+      mkdir -p $out/bin
+      ln -s "${pkg}/bin/${binName}" "$out/bin/${binName}"
+    '';
+
+  copyManpages =
+    pkg: progName:
+    # sh
+    ''
+      for page in "${pkg}"/share/man/man*/"${progName}".*.*; do
+        [ -f "$page" ] || continue
+        section="$(basename "$(dirname "$page")")"
+        mkdir -p $out/share/man/$section
+        ln -s "$page" "$out/share/man/$section/$(basename "$page")"
+      done
+    '';
 }

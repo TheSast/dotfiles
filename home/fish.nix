@@ -4,13 +4,18 @@
   lib,
   ...
 }:
+let
+  fishPkg = import ./fin.nix { inherit pkgs; };
+in
 {
   home.packages = with pkgs; [
     babelfish
+    fishPkg
   ];
 
   programs.fish = {
     enable = true;
+    package = fishPkg;
     shellInit = ''
       set fish_greeting
     '';
