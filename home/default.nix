@@ -247,23 +247,37 @@ in {
   };
 
   # Shell variables
-  home.sessionVariables =
-    config.systemd.user.sessionVariables
-    // {
-      HISTCONTROL = builtins.concatStringsSep ":" config.programs.bash.historyControl;
-      CARGO_HOME = "${config.xdg.dataHome}/cargo";
-      GNUPGHOME = "${config.xdg.dataHome}/gnupg";
-      LESSHISTFILE = "${config.xdg.stateHome}/less/history";
-      MANPAGER = "less -R --use-color -Dd+r -Du+b";
-      MANROFFOPT = "-P -c";
-      NODE_REPL_HISTORY = "${config.xdg.dataHome}/node_repl_history";
-      NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
-      INPUTRC = "${config.xdg.configHome}/readline/inputrc";
-      RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
-      STARSHIP_CONFIG = "${config.xdg.configHome}/starship/starship.toml";
-      EDITOR = config.home.sessionVariables.VISUAL;
-    };
+  home.sessionVariables = {
+    HISTCONTROL = builtins.concatStringsSep ":" config.programs.bash.historyControl;
+    CARGO_HOME = "${config.xdg.dataHome}/cargo";
+    GNUPGHOME = "${config.xdg.dataHome}/gnupg";
+    LESSHISTFILE = "${config.xdg.stateHome}/less/history";
+    MANPAGER = "less -R --use-color -Dd+r -Du+b";
+    MANROFFOPT = "-P -c";
+    NODE_REPL_HISTORY = "${config.xdg.dataHome}/node_repl_history";
+    NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
+    INPUTRC = "${config.xdg.configHome}/readline/inputrc";
+    RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
+    STARSHIP_CONFIG = "${config.xdg.configHome}/starship/starship.toml";
+    EDITOR = config.home.sessionVariables.VISUAL;
+    inherit (config.systemd.user.sessionVariables) VISUAL;
+  };
 
+  home.sessionPath = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/bin" ];
+
+  home.sessionSearchVariables = {
+    INFOPATH = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/share/info" ];
+    XCURSOR_PATH = [
+      "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/bin"
+    ];
+    TERMINFO_DIRS = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/share/terminfo" ];
+    GTK_PATH = [
+      "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/lib/gtk-2.0"
+      "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/lib/gtk-3.0"
+      "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/lib/gtk-4.0"
+    ];
+    LIBEXEC_PATH = [ "\${XDG_RUNTIME_DIR:-/run/user/$EUID}/nix-tmpinstall/profile/libexec" ];
+  };
   # Session variables
   # These are picked up by GDM and KDE Plasma (apparently) but not by SDDM (which loads your shell config) or other DMs
   systemd.user.sessionVariables = {
@@ -276,14 +290,10 @@ in {
     NVIM_APPNAME = "astronvim";
     VISUAL = "nvim";
     ELECTRON_OZONE_PLATFORM_HINT = "auto"; # enable wayland detection for some electron apps (notably: yes obsidian, yes vieb)
-    PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin\${PATH:+:$PATH}";
-    INFOPATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share/info\${INFOPATH:+:$INFOPATH}";
-    XCURSOR_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/bin\${XCURSOR_PATH:+:$XCURSOR_PATH}";
-    TERMINFO_DIRS = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/share/terminfo\${TERMINFO_DIRS:+:$TERMINFO_DIRS}";
-    GTK_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-2.0:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-3.0:\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/lib/gtk-4.0\${GTK_PATH:+:$GTK_PATH}";
-    LIBEXEC_PATH = "\${XDG_RUNTIME_DIR:-/run/user/$UID}/nix-tmpinstall/profile/libexec\${LIBEXEC_PATH:+:$LIBEXEC_PATH}";
-  };
-
+  }
+  // (builtins.mapAttrs (
+    env: values: lib.mkOverride 99 (config.lib.shell.prependToVar ":" env values)
+  ) ((config.home.sessionSearchVariables or { }) // { PATH = config.home.sessionPath; }));
 
   services.syncthing = {
     enable = true;
