@@ -3,7 +3,7 @@
     mutableUsers = false;
     users = {
       root = {
-        hashedPasswordFile = config.age.secrets.root-hashed-password.path;
+        hashedPassword = "!";
       };
       u = {
         isNormalUser = true;

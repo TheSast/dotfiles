@@ -13,7 +13,6 @@
   )
   [
     "os/common/u-hashed-password.age"
-    "os/common/root-hashed-password.age"
     "os/hosts/kafka/sshd/ssh_host_ed25519_key.age"
     "os/hosts/kafka/sshd/ssh_host_ed25519_key.pub.age"
     "os/hosts/kafka/sshd/ssh_host_rsa_key.age"
