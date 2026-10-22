@@ -17,7 +17,7 @@
         "flakes"
       ];
       use-xdg-base-directories = true;
-      trusted-users = ["@wheel"];
+      trusted-users = [];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
