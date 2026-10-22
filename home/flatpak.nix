@@ -24,6 +24,7 @@
         {
           name = "gnome-nightly";
           location = "https://nightly.gnome.org/gnome-nightly.flatpakrepo";
+          args = "--no-gpg-verify";
         }
       ];
       packages = (import ./lib.nix).forceExplicitFlatpakPackageUpdate [
