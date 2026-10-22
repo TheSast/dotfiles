@@ -6,6 +6,12 @@
 }: {
   home = {
     packages = [
+      # luakit
+      # qutebrowser
+      # vimb
+      # nyxt
+      # floorp
+      # helium
       (pkgs.symlinkJoin {
         # This wrapper prevents chromium from reading custom gtk css
         # If chromium reads custom gtk css, it stops listening for

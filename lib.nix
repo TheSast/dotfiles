@@ -5,6 +5,7 @@ let
     else if builtins.isFunction x
     then x system
     else x;
+  flakeLoc = config: "${config.xdg.configHome}/etc";
 in {
   applyPatches = {
     lib,
@@ -109,19 +110,22 @@ in {
   ) (builtins.removeAttrs cfg ["default"]));
 
   mkHomeManagerConfigs = inputs: cfg: (builtins.mapAttrs (
-    host: {
+    target: {
       home-manager ? cfg.default.home-manager,
       system,
       modules ? {},
       extra-packages ? {},
     }: let
       pkgs = home-manager.inputs.nixpkgs.legacyPackages."${system}";
+      host = pkgs.lib.last (pkgs.lib.splitString "@" target);
+      user = builtins.head (pkgs.lib.splitString "@" target);
     in
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           ./home
-          ./home/hosts/${pkgs.lib.last (pkgs.lib.splitString "@" host)}
+          ./home/hosts/${host}
+          {home.username = user;}
         ];
         extraSpecialArgs = {
           modules = (setOrSystemFn system cfg.default.modules) // (setOrSystemFn system modules);
@@ -151,4 +155,6 @@ in {
         ln -s "$page" "$out/share/man/$section/$(basename "$page")"
       done
     '';
+
+  symlinkDirectly = config: p: config.lib.file.mkOutOfStoreSymlink ("${flakeLoc config}/home/" + p);
 }

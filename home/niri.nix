@@ -3,9 +3,9 @@
   pkgs,
   pkgs-extra,
   ...
-}: let
-  flakeLoc = "${config.xdg.configHome}/etc";
-  symlinkDirectly = p: config.lib.file.mkOutOfStoreSymlink ("${flakeLoc}/home/" + p);
+}:
+let
+  symlinkDirectly = (import ../lib.nix).symlinkDirectly config;
   gsettings-schemas = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.pname}-${pkgs.gsettings-desktop-schemas.version}";
 in {
   services.gnome-keyring.enable = true;

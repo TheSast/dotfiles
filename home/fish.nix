@@ -9,6 +9,7 @@ let
 in
 {
   home.packages = with pkgs; [
+    zoxide
     babelfish
     fishPkg
   ];
