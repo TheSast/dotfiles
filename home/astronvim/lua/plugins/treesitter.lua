@@ -21,6 +21,7 @@ return {
           "json",
           "jsonc",
         },
+        auto_install = false,
       },
     },
   },
