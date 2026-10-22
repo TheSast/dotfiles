@@ -5,5 +5,6 @@ set guifullscreentabbar=onupdate
 set adblocker=off
 set restoretabs=all
 nmap e <toExploreMode>
+command! extplayer <:!~/.config/scripts/play-yt.sh "<useCurrentUrl>"><:mute! true>
 set searchengine=https://www.youtube.com/results?search_query=%s
 " vim: ft=vim
