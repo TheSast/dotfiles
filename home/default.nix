@@ -94,12 +94,9 @@ in {
           stylua
         ]
         ++ [
-          # build
+          # plugin deps
           gcc # nvim-treesitter
           git # lazy.nvim
-          luarocks # luarocks.nvim # blink.cmp # snacks.nvim
-          luajit # luarocks.nvim
-          unzip # luarocks.nvim
           gnumake # jsregexp for LuaSnip
           ripgrep # telescope-fzf-native.nvim # snacks.nvim
           curl # blink.cmp
@@ -108,7 +105,10 @@ in {
           # xdg-utils?
           # wl-clipboard?
         ];
-      text = ''exec nvim "$@"'';
+      text = ''
+        export LUA_CPATH="${pkgs.luajitPackages.luautf8}/lib/lua/5.1/?.so;''${LUA_CPATH:-;;}"
+        exec nvim "$@"
+      '';
     })
     networkmanagerapplet
     (lib.hiPrio (
