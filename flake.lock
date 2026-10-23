@@ -144,6 +144,22 @@
         "type": "github"
       }
     },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -324,6 +340,28 @@
         "type": "github"
       }
     },
+    "nixos-wsl": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "winpkgs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784642409,
+        "narHash": "sha256-hcbDqFuySAJawljt5r0sKBCJKYnbtGD0T/ZIozH1Dq0=",
+        "owner": "nix-community",
+        "repo": "NixOS-WSL",
+        "rev": "eaeb18da90024448a60eb1ec7132eafa4003404e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NixOS-WSL",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1783148766,
@@ -452,7 +490,8 @@
         "preservation": "preservation",
         "ragenix": "ragenix",
         "steam-config-nix": "steam-config-nix",
-        "vieb": "vieb"
+        "vieb": "vieb",
+        "winpkgs": "winpkgs"
       }
     },
     "rust-overlay": {
@@ -575,6 +614,47 @@
       "original": {
         "owner": "tejing1",
         "repo": "vieb-nix",
+        "type": "github"
+      }
+    },
+    "winget-pkgs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789353538,
+        "narHash": "sha256-6mma6mjtxhT7jj+4OOU4b7Xe2ceVWau2A6ELkwgBnbc=",
+        "owner": "microsoft",
+        "repo": "winget-pkgs",
+        "rev": "10e9803789c33d104e0dea0986e51160b4683780",
+        "type": "github"
+      },
+      "original": {
+        "owner": "microsoft",
+        "repo": "winget-pkgs",
+        "type": "github"
+      }
+    },
+    "winpkgs": {
+      "inputs": {
+        "home-manager": [
+          "home-manager-unstable"
+        ],
+        "nixos-wsl": "nixos-wsl",
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "winget-pkgs": "winget-pkgs"
+      },
+      "locked": {
+        "lastModified": 1790394434,
+        "narHash": "sha256-CocZ7+iFy8sNE+jg4JsEDCUpVF3Cz2aJLGM3xEdbsWw=",
+        "owner": "calebstewart",
+        "repo": "winpkgs",
+        "rev": "b849221dea4d62552b282cda4fc43cd1b82b3516",
+        "type": "github"
+      },
+      "original": {
+        "owner": "calebstewart",
+        "repo": "winpkgs",
         "type": "github"
       }
     }

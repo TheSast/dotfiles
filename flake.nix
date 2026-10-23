@@ -61,6 +61,27 @@
       };
     };
 
+    windowsConfigurations.sam = inputs.winpkgs.lib.windowsSystem {
+      modules = [
+        {
+          networking.hostName = "sam";
+        }
+        ./os/hosts/sam
+      ];
+    };
+
+    windowsHomeConfigurations = let
+      host = "sam";
+    in {
+      "u@${host}" = inputs.winpkgs.lib.homeConfiguration {
+        modules = [
+          {
+            winpkgs.name = host;
+          }
+        ];
+      };
+    };
+
     formatter = forAllSys (pkgs: pkgs.alejandra);
     devShells = forAllSys (pkgs: {
       shell =
@@ -109,6 +130,18 @@
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    # winget-pkgs = {
+    #   url = "github:microsoft/winget-pkgs";
+    #   flake = false;
+    # };
+    winpkgs = {
+      url = "github:calebstewart/winpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        home-manager.follows = "home-manager-unstable";
+        # winget-pkgs.follows = "winget-pkgs";
+      };
     };
 
     # user
