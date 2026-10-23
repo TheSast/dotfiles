@@ -1,0 +1,189 @@
+general:
+  # startup_commands: ['shell-exec zebar']
+
+  # shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+
+  config_reload_commands: []
+
+  focus_follows_cursor: true
+
+  toggle_workspace_on_refocus: false
+
+  cursor_jump:
+    enabled: true
+
+    # Trigger for cursor jump:
+    # - 'monitor_focus': Jump when focus changes between monitors.
+    # - 'window_focus': Jump when focus changes between windows.
+    trigger: 'window_focus'
+
+  # - 'cloak': (Windows-only) Recommended option for Windows.
+  # - 'hide': (Windows-only) Legacy option for Windows. Has stability issues with some apps.
+  # - 'place_in_corner': Artifically hides the window by placing it in the corner of the
+  #   monitor. On macOS, this is always used instead of cloak/hide.
+  hide_method: 'place_in_corner'
+
+  # Affects which windows get shown in the native Windows taskbar. Has no
+  # effect if `hide_method: 'hide'`.
+  # - 'true': Show all windows (regardless of workspace).
+  # - 'false': Only show windows from the currently shown workspaces.
+  show_all_in_taskbar: false
+
+gaps:
+  scale_with_dpi: true
+
+  inner_gap: '20px'
+
+  outer_gap:
+    top: '20px'
+    right: '20px'
+    bottom: '20px'
+    left: '20px'
+
+window_effects:
+  focused_window:
+    border:
+      enabled: false
+      color: '#8dbcff'
+
+    # may cause rendering issues for some applications.
+    hide_title_bar:
+      enabled: true
+
+    corner_style:
+      enabled: false
+      # Allowed values: 'square', 'rounded', 'small_rounded'.
+      style: 'square'
+
+    transparency:
+      enabled: true
+      opacity: '100%'
+      # opacity: '99%' # good but unfortunately no way to make fulscreen apps non-transparent
+
+  other_windows:
+    border:
+      enabled: false
+      color: '#a1a1a1'
+    hide_title_bar:
+      enabled: true
+    corner_style:
+      enabled: false
+      style: 'square'
+    transparency:
+      enabled: true
+      opacity: '95%'
+
+window_behavior:
+  initial_state: 'tiling'
+
+  state_defaults:
+    floating:
+      # Whether to center floating windows by default.
+      centered: true
+
+      # Whether to show floating windows as always on top.
+      shown_on_top: true
+
+    fullscreen:
+      # Maximize the window if possible. Use fullscreen as fallback
+      maximized: false
+      shown_on_top: true
+
+workspaces:
+  - name: '1'
+  - name: '2'
+  - name: '3'
+  - name: '4'
+  - name: '5'
+  - name: '6'
+  - name: '7'
+  - name: '8'
+  - name: '9'
+
+window_rules:
+  - commands: ['ignore']
+    match:
+      - window_process: { equals: 'zebar' }
+
+      - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
+        window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
+
+      - window_process: { equals: 'PowerToys' }
+        window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
+      - window_process: { regex: '.*seelen.*' }
+        window_class: { equals: 'Tauri Window' }
+      - window_title: { equals: 'Command Palette' }
+        window_class: { equals: 'WinUIDesktopWin32WindowClass' }
+      - window_process: { equals: 'PowerToys' }
+        window_title: { regex: '.*? - Peek' }
+      - window_process: { equals: 'Lively' }
+        window_class: { regex: 'HwndWrapper' }
+      - window_process: { equals: 'EXCEL' }
+        window_class: { not_regex: 'XLMAIN' }
+      - window_process: { equals: 'WINWORD' }
+        window_class: { not_regex: 'OpusApp' }
+      - window_process: { equals: 'POWERPNT' }
+        window_class: { not_regex: 'PPTFrameClass' }
+
+keybindings:
+  # focus
+  - commands: ['focus --direction left']
+    bindings: ['rwin+h', 'alt+shift+h']
+  - commands: ['focus --direction right']
+    bindings: ['rwin+l', 'alt+shift+l']
+  - commands: ['focus --direction up']
+    bindings: ['rwin+k', 'alt+shift+k']
+  - commands: ['focus --direction down']
+    bindings: ['rwin+j', 'alt+shift+j']
+
+  # move
+  - commands: ['move --direction left']
+    bindings: ['rwin+shift+h']
+  - commands: ['move --direction right']
+    bindings: ['rwin+shift+l']
+  - commands: ['move --direction up']
+    bindings: ['rwin+shift+k']
+  - commands: ['move --direction down']
+    bindings: ['rwin+shift+j']
+
+  - commands: ['wm-toggle-pause']
+    bindings: ['alt+shift+p']
+  - commands: ['toggle-tiling-direction']
+    bindings: ['alt+shift+v']
+
+  - commands: ['toggle-fullscreen']
+    bindings: ['rwin+z', 'alt+shift+z']
+  - commands: ['toggle-minimized']
+    bindings: ['alt+shift+m']
+  - commands: ['close']
+    bindings: ['rwin+q']
+
+  - commands: ['shell-exec wt']
+    bindings: ['rwin+n', 'alt+shift+n']
+
+  # debug
+  - commands: ['wm-exit']
+    bindings: ['alt+shift+e']
+  - commands: ['wm-reload-config']
+    bindings: ['alt+shift+r']
+
+  # must exist to focus
+  - commands: ['focus --workspace 1']
+    bindings: ['alt+1']
+  - commands: ['focus --workspace 2']
+    bindings: ['alt+2']
+  - commands: ['focus --workspace 3']
+    bindings: ['alt+3']
+  - commands: ['focus --workspace 4']
+    bindings: ['alt+4']
+  - commands: ['focus --workspace 5']
+    bindings: ['alt+5']
+  - commands: ['focus --workspace 6']
+    bindings: ['alt+6']
+  - commands: ['focus --workspace 7']
+    bindings: ['alt+7']
+  - commands: ['focus --workspace 8']
+    bindings: ['alt+8']
+  - commands: ['focus --workspace 9']
+    bindings: ['alt+9']
+

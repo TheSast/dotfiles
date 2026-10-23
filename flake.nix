@@ -1,6 +1,6 @@
 {
   outputs = inputs: let
-    inherit (import ./lib.nix) applyPatches mkNixOsConfigs mkHomeManagerConfigs;
+    inherit (import ./lib.nix) applyPatches mkNixOsConfigs mkHomeManagerConfigs mkNtOsConfigs mkNtHomeManagerConfigs;
     forAllSys = (import ./lib.nix).forAllSys inputs;
   in {
     nixosConfigurations = mkNixOsConfigs inputs {
@@ -71,6 +71,21 @@
         inherit pkgs;
       };
     });
+
+    windowsConfigurations = mkNtOsConfigs inputs {
+      sam = {
+        inherit (inputs) winpkgs;
+        system = "x86_64-nt";
+      };
+    };
+
+    windowsHomeConfigurations = mkNtHomeManagerConfigs inputs {
+      "u@sam" = {
+        inherit (inputs) winpkgs;
+        system = "x86_64-nt";
+      };
+    };
+
     formatter = forAllSys (pkgs: pkgs.alejandra);
     devShells = forAllSys (pkgs: {
       shell =
@@ -112,6 +127,18 @@
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    # winget-pkgs = {
+    #   url = "github:microsoft/winget-pkgs";
+    #   flake = false;
+    # };
+    winpkgs = {
+      url = "github:calebstewart/winpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        home-manager.follows = "home-manager-unstable";
+        # winget-pkgs.follows = "winget-pkgs";
+      };
     };
 
     # user

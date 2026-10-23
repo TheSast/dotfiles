@@ -109,6 +109,31 @@ in {
       }
   ) (builtins.removeAttrs cfg ["default"]));
 
+  mkNtOsConfigs = inputs: cfg: (builtins.mapAttrs (
+    host: {
+      winpkgs ? cfg.default.winpkgs,
+      system,
+      # modules ? {},
+      # extra-packages ? {},
+    }: let
+      evalSystem = builtins.replaceStrings ["nt"] ["linux"] system;
+    in
+      winpkgs.lib.windowsSystem {
+        modules = [
+          # ./os
+          ./os/hosts/${host}
+          {networking.hostName = host;}
+        ];
+        specialArgs = {
+          # modules = (setOrSystemFn system cfg.default.modules) // (setOrSystemFn system modules);
+          flake = inputs.self;
+          # pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages."${system}";
+          # pkgs-extra =
+          #   (setOrSystemFn system cfg.default.extra-packages) // (setOrSystemFn system extra-packages);
+        };
+      }
+  ) (builtins.removeAttrs cfg ["default"]));
+
   mkHomeManagerConfigs = inputs: cfg: (builtins.mapAttrs (
     target: {
       home-manager ? cfg.default.home-manager,
@@ -157,4 +182,34 @@ in {
     '';
 
   symlinkDirectly = config: p: config.lib.file.mkOutOfStoreSymlink ("${flakeLoc config}/home/" + p);
+
+  mkNtHomeManagerConfigs = inputs: cfg: (builtins.mapAttrs (
+    host: {
+      winpkgs ? cfg.default.winpkgs,
+      system,
+      # modules ? {},
+      # extra-packages ? {},
+    }: let
+      evalSystem = builtins.replaceStrings ["nt"] ["linux"] system;
+    in
+      winpkgs.lib.homeConfiguration {
+        modules = [
+          # ./home
+          (
+            let
+              parts = builtins.split "@" host;
+            in
+              ./home/hosts/${builtins.elemAt parts (builtins.length parts) - 1}
+          )
+          {winpkgs.name = host;}
+        ];
+        extraSpecialArgs = {
+          # modules = (setOrSystemFn system cfg.default.modules) // (setOrSystemFn system modules);
+          flake = inputs.self;
+          # pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages."${system}";
+          # pkgs-extra =
+          #   (setOrSystemFn system cfg.default.extra-packages) // (setOrSystemFn system extra-packages);
+        };
+      }
+  ) (builtins.removeAttrs cfg ["default"]));
 }

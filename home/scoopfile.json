@@ -1,0 +1,39 @@
+{
+    "buckets": [
+        {
+            "Name": "main",
+            "Source": null,
+            "Updated": null,
+            "Manifests": 1681
+        },
+        {
+            "Name": "extras",
+            "Source": null,
+            "Updated": null,
+            "Manifests": 2425
+        }
+    ],
+    "apps": [
+        {
+            "Name": "7zip",
+            "Version": "26.03",
+            "Source": "main",
+            "Updated": "\/Date(1790196710987)\/",
+            "Info": ""
+        },
+        {
+            "Name": "git",
+            "Version": "2.55.0.5",
+            "Source": "main",
+            "Updated": "\/Date(1790196716624)\/",
+            "Info": ""
+        },
+        {
+            "Name": "webcord",
+            "Version": "4.14.0",
+            "Source": "extras",
+            "Updated": "\/Date(1790196745714)\/",
+            "Info": ""
+        }
+    ]
+}

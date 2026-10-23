@@ -1,0 +1,111 @@
+AutoThemeSwitchingEnabled: true
+Governor: Default
+Autostart:
+  Validate: true
+WindowsThemeMode:
+  Enabled: false
+  DarkThemePath: 
+  LightThemePath: 
+  MonitorActiveTheme: false
+  ApplyFlags: []
+AppsSwitch:
+  Enabled: true
+  Component:
+    Mode: Switch
+SystemSwitch:
+  Enabled: true
+  Component:
+    Mode: Switch
+    TaskbarSwitchDelay: 1200
+    TaskbarColorSwitch: false
+    TaskbarColorDuring: Light
+    DWMPrevalenceSwitch: false
+    DWMPrevalenceEnableTheme: Light
+TouchKeyboardSwitch:
+  Enabled: false
+  Component: {}
+ColorizationSwitch:
+  Enabled: false
+  Component:
+    LightHex: ''
+    DarkHex: ''
+    LightAutoColorization: false
+    DarkAutoColorization: false
+ColorFilterSwitch:
+  Enabled: false
+  Component: {}
+CursorSwitch:
+  Enabled: false
+  Component:
+    CursorsLight: 
+    CursorsDark: 
+Sunrise: 2026-10-15T06:00:00.0000000
+Sunset: 2026-10-15T18:00:00.0000000
+Location:
+  PollingCooldownTimeSpan: 1.00:00:00
+  Enabled: false
+  UseGeolocatorService: true
+  SunsetOffsetMin: 0
+  SunriseOffsetMin: 0
+  CustomLat: 0
+  CustomLon: 0
+Tunable:
+  BatterySliderDefaultValue: 25
+  DwmRefreshViaColorization: false
+  UseLogonTask: false
+  Debug: false
+  Trace: false
+  DebugTimerMessage: false
+  ShowTrayIcon: true
+  UICulture: en
+GPUMonitoring:
+  Enabled: false
+  Threshold: 30
+  Samples: 1
+ProcessBlockList:
+  ProcessNames: []
+  Enabled: false
+Events:
+  DarkThemeOnBattery: false
+  Win10AllowLockscreenSwitch: false
+Notifications:
+  OnAutoThemeSwitching: true
+  OnSkipNextSwitch: true
+AutoSwitchNotify:
+  Enabled: false
+  GracePeriodMinutes: 5
+Hotkeys:
+  Enabled: false
+  ForceLight: 
+  ForceDark: 
+  NoForce: 
+  ToggleTheme: 
+  TogglePostpone: 
+  ToggleAutoThemeSwitch: 
+IdleChecker:
+  Enabled: false
+  Threshold: 5
+WallpaperSwitch:
+  Enabled: false
+  Component:
+    TypeLight: Individual
+    TypeDark: Individual
+    Position: Fill
+    GlobalWallpaper:
+      Light: 
+      Dark: 
+    SolidColors:
+      Light: '#FFFFFF'
+      Dark: '#000000'
+    Monitors:
+Updater:
+  AutoInstall: false
+  Enabled: true
+  Silent: false
+  DaysBetweenUpdateCheck: 7
+  CheckOnStart: false
+  VersionQueryUrl: 
+  DownloadBaseUrl: 
+  ZipCustomUrl: 
+  HashCustomUrl: 
+
