@@ -1,12 +1,10 @@
-{
+{config, pkgs, ...}: {
   boot = {
     plymouth = {
       enable = true;
       theme = "breeze";
     };
     consoleLogLevel = 0; # reduce console logs
-    initrd.verbose = false; # reduce initrd output
-    initrd.systemd.enable = true; # use initrd, apparently spawning plymouth faster
     kernelParams = [
       "quiet" # ask quiet
       "fbcon=nodefer" # do not use vendor logo
@@ -18,5 +16,15 @@
       "rd.systemd.show_status=false" # hide systemd messages
       "vt.global_cursor_default=0" # remove cursor blink
     ];
-  };
+  } //
+    (
+      if pkgs.lib.versionAtLeast config.system.nixos.release "26.11"
+      then {}
+      else {
+        initrd = {
+          verbose = false; # reduce initrd output
+          systemd.enable = true; # use initrd, apparently spawning plymouth faster
+        };
+      }
+    );
 }
