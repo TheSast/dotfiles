@@ -88,6 +88,7 @@ return {
       formatting = {
         disabled = {
           "lua_ls",
+          "nil_ls",
         },
       },
       diagnostics = {

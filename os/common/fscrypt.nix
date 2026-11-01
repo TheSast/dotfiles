@@ -31,8 +31,12 @@
 
       mountpoint -q /etc/fscrypt.conf && umount /etc/fscrypt.conf
       mountpoint -q /.fscrypt && umount /.fscrypt
-      rm /etc/fscrypt.conf
-      rmdir /.fscrypt /dur/.fscrypt
+      rm -f /etc/fscrypt.conf
+      for dir in /.fscrypt /dur/.fscrypt; do
+        if [ -d "$dir" ]; then
+          rmdir -- "$dir"
+        fi
+      done
       fscrypt setup --all-users
       fscrypt setup /home --all-users
       cp /etc/fscrypt.conf /dur/etc/fscrypt.conf
