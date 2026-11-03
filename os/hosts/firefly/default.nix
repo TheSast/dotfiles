@@ -19,7 +19,6 @@
     ./identity.nix
     ./network.nix
     ./preservation.nix
-    ./secrets.nix
     ./state.nix
   ];
 

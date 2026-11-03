@@ -7,7 +7,7 @@
       default = {
         inherit (inputs) nixpkgs;
         modules = system: {
-          agenix = inputs.agenix.nixosModules.default;
+          nix-secrets = inputs.nix-secrets.nixosModules.default;
           disko =
             (applyPatches {
               inherit (inputs.nixpkgs) lib;
@@ -19,6 +19,7 @@
             }).nixosModules.disko;
           nixos-hardware = inputs.hardware.nixosModules;
           preservation = inputs.preservation.nixosModules.default;
+          inherit (inputs) private;
         };
       };
       kafka = {
@@ -38,12 +39,12 @@
         inherit (inputs) home-manager;
         modules = {
           nix-flatpak = inputs.nix-flatpak.homeManagerModules.nix-flatpak;
-          agenix = inputs.agenix.homeManagerModules.default;
+          nix-secrets = inputs.nix-secrets.homeManagerModules.default;
+          inherit (inputs) private;
         };
         extra-packages = system: {
           vieb = inputs.vieb.packages."${system}".default;
           noctalia = inputs.noctalia.packages."${system}".default;
-          ragenix = inputs.ragenix.packages."${system}".default;
         };
       };
       "u@kafka" = {
@@ -90,14 +91,8 @@
 
   inputs = {
     # nix
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ragenix = {
-      url = "github:yaxitech/ragenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    private.url = "git+ssh://gh-joker/TheSast/dotfiles-private.git";
+    nix-secrets.url = "github:unnamed-systems/nix-secrets";
     call-flake.url = "github:divnix/call-flake";
 
     # shared

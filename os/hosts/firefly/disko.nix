@@ -1,8 +1,4 @@
-{
-  config,
-  modules,
-  ...
-}: {
+{modules, ...}: {
   imports = [
     modules.disko
   ];
@@ -55,7 +51,6 @@
                 type = "luks";
                 name = "c-storage";
 
-                passwordFile = config.age.secrets."firefly/luks-password".path;
                 enrollFinalTPM2PostInstall = true;
                 extraFinalTPM2EnrollArgs = ["--tpm2-pcrs=0+7"];
 

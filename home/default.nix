@@ -1,6 +1,5 @@
 {
   config,
-  pkgs-extra,
   lib,
   pkgs,
   ...
@@ -19,6 +18,7 @@ in {
     ./niri.nix
     ./nix.nix
     ./shell.nix
+    ./ssh.nix
     ./terminal.nix
     ./tmp-install.nix
     ./vcs.nix
@@ -38,25 +38,23 @@ in {
     ))
     (pkgs.symlinkJoin {
       name = "nh-with-env";
-      paths = [ pkgs.nh ];
-      nativeBuildInputs = [ pkgs.makeWrapper ];
+      paths = [pkgs.nh];
+      nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
         wrapProgram "$out/bin/nh" \
           --prefix PATH : ${
-            pkgs.runCommand "coreutils-env-only" { } ''
-              mkdir -p "$out/bin"
-              ln -s "${pkgs.coreutils}/bin/env" "$out/bin/env"
-            ''
-          }/bin
+          pkgs.runCommand "coreutils-env-only" {} ''
+            mkdir -p "$out/bin"
+            ln -s "${pkgs.coreutils}/bin/env" "$out/bin/env"
+          ''
+        }/bin
       '';
     })
-    pkgs-extra.ragenix
-    swayimg
     trash-cli
     wf-recorder
     wl-clipboard
     xdg-utils
-    (pkgs.runCommand "picky-coreutils" { } ''
+    (pkgs.runCommand "picky-coreutils" {} ''
       # ISSUE: fixme
       mkdir -p "$out/bin"
       mkdir -p "$out/share/man/man1"
@@ -88,26 +86,20 @@ in {
     };
   };
 
-  home.file = {
-    ".ssh/config" = {
-      source = ./ssh/config;
-    };
-    # ssh keys handled via ./secrets.nix
-  };
-
   # aka home.userSessionVariables
-  systemd.user.sessionVariables = {
-    XDG_DOCUMENTS_DIR = config.xdg.userDirs.documents;
-    XDG_PICTURES_DIR = config.xdg.userDirs.pictures;
-    XDG_DOWNLOAD_DIR = config.xdg.userDirs.download;
-    XDG_DESKTOP_DIR = config.xdg.userDirs.desktop;
-    XDG_VIDEOS_DIR = config.xdg.userDirs.videos;
-    XDG_MUSIC_DIR = config.xdg.userDirs.music;
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";
-  }
-  // (builtins.mapAttrs (
-    env: values: lib.mkOverride 99 (config.lib.shell.prependToVar ":" env values)
-  ) ((config.home.sessionSearchVariables or { }) // { PATH = config.home.sessionPath; }));
+  systemd.user.sessionVariables =
+    {
+      XDG_DOCUMENTS_DIR = config.xdg.userDirs.documents;
+      XDG_PICTURES_DIR = config.xdg.userDirs.pictures;
+      XDG_DOWNLOAD_DIR = config.xdg.userDirs.download;
+      XDG_DESKTOP_DIR = config.xdg.userDirs.desktop;
+      XDG_VIDEOS_DIR = config.xdg.userDirs.videos;
+      XDG_MUSIC_DIR = config.xdg.userDirs.music;
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    }
+    // (builtins.mapAttrs (
+      env: values: lib.mkOverride 99 (config.lib.shell.prependToVar ":" env values)
+    ) ((config.home.sessionSearchVariables or {}) // {PATH = config.home.sessionPath;}));
 
   services.syncthing = {
     enable = true;

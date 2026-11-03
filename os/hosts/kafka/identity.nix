@@ -2,9 +2,9 @@
   services.openssh = {
     generateHostKeys = false;
     hostKeys = [
-      {path = config.age.secrets."kafka/sshd/ssh_host_ed25519_key".path;}
-      {path = config.age.secrets."kafka/sshd/ssh_host_rsa_key".path;}
+      {path = config.security.nix-secrets.secrets."os/hosts/kafka/sshd/ssh_host_ed25519_key".path;}
+      {path = config.security.nix-secrets.secrets."os/hosts/kafka/sshd/ssh_host_rsa_key".path;}
     ];
   };
-  networking.hostName = "kafka";
+  networking.hostName = "kafka"; # REMOVEME
 }

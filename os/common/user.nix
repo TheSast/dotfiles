@@ -7,7 +7,7 @@
       };
       u = {
         isNormalUser = true;
-        hashedPasswordFile = config.age.secrets.u-hashed-password.path;
+        hashedPasswordFile = config.security.nix-secrets.secrets."os/common/u-hashed-password".path;
         extraGroups = [
           "networkmanager"
           "wheel"
@@ -16,4 +16,5 @@
       };
     };
   };
+  security.nix-secrets.secrets."os/common/u-hashed-password".neededForUsers = true;
 }

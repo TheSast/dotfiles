@@ -1,4 +1,3 @@
-conf.d/*
-!conf.d/*.age
+conf.d/**
 repos/**
 workspaces/**

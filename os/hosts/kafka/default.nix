@@ -13,7 +13,6 @@
     ./network.nix
     ./preservation.nix
     ./security.nix
-    ./secrets.nix
     ./state.nix
   ];
 
