@@ -3,6 +3,7 @@
     ./audio.nix
     ./bootloader.nix
     ./frugal.nix
+    ./fscrypt.nix
     ./identity.nix
     ./locale.nix
     ./login-manager.nix

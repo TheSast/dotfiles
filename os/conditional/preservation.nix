@@ -15,6 +15,7 @@
 
     preserveAt."/dur" = {
       files = [
+        "/etc/fscrypt.conf"
         {
           file = "/var/lib/systemd/random-seed";
           how = "symlink";
@@ -22,6 +23,7 @@
         }
       ];
       directories = [
+        "/.fscrypt"
         "/etc/NetworkManager/system-connections"
         # TODO:
         # manual certificate storage, maybe move to networking.networkmanager.ensureProfiles.profiles with agenix?
@@ -32,6 +34,7 @@
         "/var/lib/bluetooth"
         "/var/lib/disko"
         "/var/lib/fwupd"
+        "/var/lib/fscrypt"
         "/var/lib/udisks2"
         {
           directory = "/var/lib/nixos";

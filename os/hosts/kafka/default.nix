@@ -7,7 +7,6 @@
     ./audio.nix
     ./battery.nix
     ./disko.nix
-    ./fscrypt.nix
     ./hardware.nix
     ./identity.nix
     ./login-manager.nix
